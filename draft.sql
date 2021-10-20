@@ -20,7 +20,7 @@ CREATE TABLE Instructor(
 	age INT,
 	position varchar(100),
 	
-	PRIMARY KEY (ins_id, ins_name, department)
+	PRIMARY KEY (ins_id)
 );
 
 CREATE TABLE course_offering(
@@ -43,7 +43,7 @@ CREATE TABLE course_offering(
 INSERT INTO course_catalogue(course_id, course_name, department, l, t, p, s, c)
 VALUES('CY101', 'Chemistry for Engineers', 'CY', 3, 2, 1, 1, 3);
 INSERT INTO course_catalogue(course_id, course_name, department, l, t, p, s, c)
-VALUES( 'GE103', 'Introduction to Programming', 'CS', 3, 2, 1, 1, 4.5);
+VALUES( 'GE103', 'Introduction to Programming', 'GE', 3, 2, 1, 1, 4.5);
 INSERT INTO course_catalogue(course_id, course_name, department, l, t, p, s, c)
 VALUES('EE101', 'Introduction to Electrical Engineering', 'EE', 3, 2, 1, 1, 4);
 INSERT INTO course_catalogue(course_id, course_name, department, l, t, p, s, c)
@@ -69,7 +69,7 @@ VALUES (DEFAULT, 'Karishma Roy', 'EE', 49, 'Associate Professor');
 INSERT INTO instructor(ins_id, ins_name, department, age, position)
 VALUES (DEFAULT, 'Parakram Suchi', 'CE', 45, 'Assistant Professor');
 INSERT INTO instructor(ins_id, ins_name, department, age, position)
-VALUES (DEFAULT, 'Saryu Sengupta', 'MNC', 38, 'Assistant Professor');
+VALUES (DEFAULT, 'Saryu Sengupta', 'MA', 38, 'Assistant Professor');
 INSERT INTO instructor(ins_id, ins_name, department, age, position)
 VALUES (DEFAULT, 'Kartik Matta', 'ME', 32, 'Assistant Professor');
 INSERT INTO instructor(ins_id, ins_name, department, age, position)
