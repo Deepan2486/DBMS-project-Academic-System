@@ -1,8 +1,8 @@
 CREATE TABLE Course_Offering(
 	
 	index SERIAL UNIQUE,
-	course_id varchar(100),
-	course_name varchar(300),
+	course_id varchar(100) UNIQUE,
+	course_name varchar(300) UNIQUE,
 	department varchar(50),
 	section INT,
 	semester INT,
