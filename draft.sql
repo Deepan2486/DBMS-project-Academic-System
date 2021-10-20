@@ -31,6 +31,10 @@ CREATE TABLE course_offering(
 	section INT,
 	year INT,
 	semester INT,
+	prerequisites varchar(500),
+	min_CGPA NUMERIC(3, 2),
+	eligible_batches varchar(500),
+	eligible_depts varchar(500),
 	
 	PRIMARY KEY (course_id, section, year, semester),
 	
