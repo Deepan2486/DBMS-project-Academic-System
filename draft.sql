@@ -27,9 +27,16 @@ CREATE TABLE Instructor(
 	PRIMARY KEY (ins_id, ins_name, department)
 );
 
+--Filling course offering table
 INSERT INTO course_offering(index, course_id, course_name, department, section, semester, year, l, t, p, s, c)
 VALUES(DEFAULT, 'CY101', 'Chemistry for Engineers', 'CY', 1, 1, 2019, 3, 2, 1, 1, 3);
+INSERT INTO course_offering(index, course_id, course_name, department, section, semester, year, l, t, p, s, c)
 VALUES(DEFAULT, 'GE103', 'Introduction to Programming', 'CS', 1, 1, 2019, 3, 2, 1, 1, 4.5);
+INSERT INTO course_offering(index, course_id, course_name, department, section, semester, year, l, t, p, s, c)
+VALUES(DEFAULT, 'EE101', 'Introduction to Electrical Engineering', 'EE', 1, 2, 2019, 3, 2, 1, 1, 4);
+INSERT INTO course_offering(index, course_id, course_name, department, section, semester, year, l, t, p, s, c)
+VALUES(DEFAULT, 'CS201', 'Data structures', 'CS', 1, 1, 2020, 3, 2, 1, 1, 4);
 
+--Filling Instructor table
 INSERT INTO instructor(ins_id, ins_name, department, age, position)
 VALUES (DEFAULT, 'Amit Sharma', 'EE', 26, 'Assistant professor');
