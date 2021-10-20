@@ -108,20 +108,27 @@ DECLARE
 	row_var Instructor%rowtype;
 	rolename varchar(100);
 	passw varchar(100);
+	instructor_id varchar(100);
 BEGIN
 	FOR row_var in (SELECT * from Instructor)
 	LOOP
-		rolename := row_var.ins_name || row_var.ins_id;
-		passw := 'pass_' || row_var.ins_name || row_var.ins_id;
-		EXECUTE
-			'CREATE ROLE' || rolename
-			'LOGIN' 
-			'PASSWORD' || passw;
+		instructor_id := CAST(row_var.ins_id AS varchar);
+		rolename := row_var.ins_name ||'_'|| instructor_id ;
+		passw := 'pass_' || instructor_id ;
+		EXECUTE format(
+        'CREATE USER %I WITH
+            LOGIN
+            PASSWORD %L'
+         , rolename
+         , passw
+         );
 	END LOOP;
 	RETURN;
 	
 END;
-$BODY$
+$BODY$;
+
+
 			
 		
 	
