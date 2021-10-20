@@ -15,7 +15,8 @@ CREATE TABLE Course_Catalogue(
 CREATE TABLE Instructor(
 	
 	ins_id SERIAL UNIQUE,
-	ins_name varchar(100),
+	first_name varchar(100),
+	last_name varchar(100),
 	department varchar(50),
 	age INT,
 	position varchar(100),
@@ -66,28 +67,28 @@ INSERT INTO course_catalogue(course_id, course_name, department, l, t, p, s, c)
 VALUES('CH101', 'Introduction to Chemical Engineering', 'CH', 3, 2, 1, 1, 3);
 
 --Filling Instructor table
-INSERT INTO instructor(ins_id, ins_name, department, age, position)
-VALUES (DEFAULT, 'Amit Sharma', 'EE', 26, 'Assistant professor');
-INSERT INTO instructor(ins_id, ins_name, department, age, position)
-VALUES (DEFAULT, 'Karishma Roy', 'EE', 49, 'Associate Professor');
-INSERT INTO instructor(ins_id, ins_name, department, age, position)
-VALUES (DEFAULT, 'Parakram Suchi', 'CE', 45, 'Assistant Professor');
-INSERT INTO instructor(ins_id, ins_name, department, age, position)
-VALUES (DEFAULT, 'Saryu Sengupta', 'MA', 38, 'Assistant Professor');
-INSERT INTO instructor(ins_id, ins_name, department, age, position)
-VALUES (DEFAULT, 'Kartik Matta', 'ME', 32, 'Assistant Professor');
-INSERT INTO instructor(ins_id, ins_name, department, age, position)
-VALUES (DEFAULT, 'Swati Sharma', 'CH', 52, 'Assistant Professor');
-INSERT INTO instructor(ins_id, ins_name, department, age, position)
-VALUES (DEFAULT, 'Ekta Basu', 'CS', 47, 'Assistant Professor');
-INSERT INTO instructor(ins_id, ins_name, department, age, position)
-VALUES (DEFAULT, 'Virat Bindra', 'ME', 29, 'Assistant Professor');
-INSERT INTO instructor(ins_id, ins_name, department, age, position)
-VALUES (DEFAULT, 'Rohit Kumar', 'CS', 36, 'Associate professor');
-INSERT INTO instructor(ins_id, ins_name, department, age, position)
-VALUES (DEFAULT, 'Subham Singh', 'CH', 45, 'Associate professor');
-INSERT INTO instructor(ins_id, ins_name, department, age, position)
-VALUES (DEFAULT, 'Rahul Sabharwal', 'CE', 32, 'Associate professor');
+INSERT INTO instructor(ins_id, first_name, last_name, department, age, position)
+VALUES (DEFAULT, 'Amit', 'Sharma', 'EE', 26, 'Assistant professor');
+INSERT INTO instructor(ins_id, first_name, last_name, department, age, position)
+VALUES (DEFAULT, 'Karishma', 'Roy', 'EE', 49, 'Associate Professor');
+INSERT INTO instructor(ins_id, first_name, last_name, department, age, position)
+VALUES (DEFAULT, 'Parakram', 'Suchi', 'CE', 45, 'Assistant Professor');
+INSERT INTO instructor(ins_id, first_name, last_name, department, age, position)
+VALUES (DEFAULT, 'Saryu', 'Sengupta', 'MA', 38, 'Assistant Professor');
+INSERT INTO instructor(ins_id, first_name, last_name, department, age, position)
+VALUES (DEFAULT, 'Kartik' ,'Matta', 'ME', 32, 'Assistant Professor');
+INSERT INTO instructor(ins_id, first_name, last_name, department, age, position)
+VALUES (DEFAULT, 'Swati', 'Sharma', 'CH', 52, 'Assistant Professor');
+INSERT INTO instructor(ins_id, first_name, last_name, department, age, position)
+VALUES (DEFAULT, 'Ekta', 'Basu', 'CS', 47, 'Assistant Professor');
+INSERT INTO instructor(ins_id, first_name, last_name, department, age, position)
+VALUES (DEFAULT, 'Virat', 'Bindra', 'ME', 29, 'Assistant Professor');
+INSERT INTO instructor(ins_id, first_name, last_name, department, age, position)
+VALUES (DEFAULT, 'Rohit', 'Kumar', 'CS', 36, 'Associate professor');
+INSERT INTO instructor(ins_id, first_name, last_name, department, age, position)
+VALUES (DEFAULT, 'Subham', 'Singh', 'CH', 45, 'Associate professor');
+INSERT INTO instructor(ins_id, first_name, last_name, department, age, position)
+VALUES (DEFAULT, 'Rahul', 'Sabharwal', 'CE', 32, 'Associate professor');
 
 
 CREATE TABLE timetable_slots(
@@ -113,7 +114,7 @@ BEGIN
 	FOR row_var in (SELECT * from Instructor)
 	LOOP
 		instructor_id := CAST(row_var.ins_id AS varchar);
-		rolename := row_var.ins_name ||'_'|| instructor_id ;
+		rolename := row_var.first_name ||'_'|| instructor_id ;
 		passw := 'pass_' || instructor_id ;
 		EXECUTE format(
         'CREATE USER %I WITH
@@ -127,6 +128,9 @@ BEGIN
 	
 END;
 $BODY$;
+
+
+SELECT create_instructor_user();
 
 
 			
