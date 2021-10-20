@@ -27,6 +27,20 @@ CREATE TABLE Instructor(
 	PRIMARY KEY (ins_id, ins_name, department)
 );
 
+CREATE TABLE teaches(
+	
+	course_id varchar(100),
+	ins_id INT,
+	timetable_slot varchar(50),
+	classroom varchar(50),
+	
+	PRIMARY KEY (timetable_slot, classroom),
+	
+	CONSTRAINT fk_courseid FOREIGN KEY(course_id) REFERENCES course_offering(course_id),
+	CONSTRAINT fk_insid FOREIGN KEY(ins_id) REFERENCES instructor(ins_id)
+	
+);
+
 --Filling course offering table
 INSERT INTO course_offering(index, course_id, course_name, department, section, semester, year, l, t, p, s, c)
 VALUES(DEFAULT, 'CY101', 'Chemistry for Engineers', 'CY', 1, 1, 2019, 3, 2, 1, 1, 3);
