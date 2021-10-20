@@ -32,9 +32,8 @@ CREATE TABLE teaches(
 	course_id varchar(100),
 	ins_id INT,
 	timetable_slot varchar(50),
-	classroom varchar(50),
 	
-	PRIMARY KEY (timetable_slot, classroom),
+	PRIMARY KEY (timetable_slot),
 	
 	CONSTRAINT fk_courseid FOREIGN KEY(course_id) REFERENCES course_offering(course_id),
 	CONSTRAINT fk_insid FOREIGN KEY(ins_id) REFERENCES instructor(ins_id)
