@@ -84,3 +84,13 @@ INSERT INTO instructor(ins_id, ins_name, department, age, position)
 VALUES (DEFAULT, 'Subham Singh', 'CH', 45, 'Associate professor');
 INSERT INTO instructor(ins_id, ins_name, department, age, position)
 VALUES (DEFAULT, 'Rahul Sabharwal', 'CE', 32, 'Associate professor');
+
+
+CREATE TABLE timetable_slots(
+	slot varchar(20) UNIQUE PRIMARY KEY
+);
+
+INSERT into timetable_slots(slot)
+VALUES ('M1');
+INSERT into timetable_slots(slot)
+VALUES ('M2'), ('A1'), ('A2'), ('E1'), ('E2');
