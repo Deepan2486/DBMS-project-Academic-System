@@ -98,3 +98,31 @@ INSERT into timetable_slots(slot)
 VALUES ('M1');
 INSERT into timetable_slots(slot)
 VALUES ('M2'), ('A1'), ('A2'), ('E1'), ('E2');
+
+
+CREATE OR REPLACE FUNCTION create_instructor_user()
+RETURNS VOID
+language plpgsql
+as $BODY$
+DECLARE
+	row_var Instructor%rowtype;
+	rolename varchar(100);
+	passw varchar(100);
+BEGIN
+	FOR row_var in (SELECT * from Instructor)
+	LOOP
+		rolename := row_var.ins_name || row_var.ins_id;
+		passw := 'pass_' || row_var.ins_name || row_var.ins_id;
+		EXECUTE
+			'CREATE ROLE' || rolename
+			'LOGIN' 
+			'PASSWORD' || passw;
+	END LOOP;
+	RETURN;
+	
+END;
+$BODY$
+			
+		
+	
+	
