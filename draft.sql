@@ -132,6 +132,32 @@ $BODY$;
 
 SELECT create_instructor_user();
 
+CREATE OR REPLACE PROCEDURE offer_course(course_id varchar(100), year INT, semester INT, section INT, slot varchar(50), prereq varchar(100), min_cpga numeric(5,2), batches varchar(100), depts varchar(100))
+language plpgsql
+as $$
+declare
+	flag BOOLEAN :=FALSE;
+	row_catalogue course_catalogue%ROWTYPE;
+	row_offering course_offering%ROWTYPE;
+begin
+	FOR row_catalogue in (SELECT * from course_catalogue)
+	LOOP
+		IF (row_catalogue.course_id = course_id) THEN 
+			flag=TRUE;
+			EXIT;
+			--If this course exists in catalogue, then break out of loop
+		END IF;
+	END LOOP;
+	
+	IF (flag=FALSE) THEN
+			RAISE EXCEPTION 'There is no Course with this course ID!';
+			RETURN;
+			--Course does'nt exist in catalogue
+	END IF;		
+	
+end;
+$$;
+
 
 			
 		
