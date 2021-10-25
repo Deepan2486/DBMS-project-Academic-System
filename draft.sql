@@ -317,3 +317,29 @@ END;
 $BODY$;
 
 SELECT create_student_user();
+
+
+CREATE OR REPLACE PROCEDURE create_student_transcripts()
+language plpgsql
+as $$
+declare
+	student_table varchar(100);
+	row_var Student%rowtype;
+	student_role varchar(100);
+begin
+	FOR row_var in (SELECT * from Student)
+	LOOP
+		student_table=row_var.first_name || '_' || row_var.st_id ||'_'|| 'transcript';
+		EXECUTE format (
+		'CREATE TABLE %I(Course_id varchar(100), Year INT, Semester INT, Credits INT, Grade varchar(20));', student_table);
+		
+		student_role:= row_var.st_id;
+		EXECUTE format (
+		'GRANT SELECT on %I TO %I;', student_table, student_role);	
+	END LOOP;
+	RETURN;
+
+end;
+$$;
+
+CALL create_student_transcripts();
