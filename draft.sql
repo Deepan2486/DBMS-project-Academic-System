@@ -289,4 +289,31 @@ CREATE ROLE Dean_Academics
 LOGIN
 PASSWORD 'pass_dean_acad';
 	
+--make all student roles
+CREATE OR REPLACE FUNCTION create_student_user()
+RETURNS VOID
+language plpgsql
+as $BODY$
+DECLARE
+	row_var Student%rowtype;
+	rolename varchar(100);
+	passw varchar(100);
+BEGIN
+	FOR row_var in (SELECT * from Student)
+	LOOP
+		rolename :=row_var.st_id;
+		passw := 'pass_' || row_var.st_id ;
+		EXECUTE format(
+        'CREATE USER %I WITH
+            LOGIN
+            PASSWORD %L'
+         , rolename
+         , passw
+         );
+	END LOOP;
+	RETURN;
 	
+END;
+$BODY$;
+
+SELECT create_student_user();
