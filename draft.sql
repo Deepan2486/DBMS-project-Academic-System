@@ -26,7 +26,7 @@ CREATE TABLE Instructor(
 
 CREATE TABLE course_offering(
 	
-	course_id varchar(100) UNIQUE,
+	course_id varchar(100),
 	ins_id INT,
 	timetable_slot varchar(50),
 	section INT,
