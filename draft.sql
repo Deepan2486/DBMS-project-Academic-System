@@ -44,6 +44,18 @@ CREATE TABLE course_offering(
 	
 );
 
+CREATE TABLE Student(
+	
+	st_id varchar(100),
+	first_name varchar(100),
+	last_name varchar(100),
+	department varchar(50),
+	batch INT,
+	degree varchar(100),
+	
+	PRIMARY KEY (st_id)
+);
+
 --Filling course offering table
 INSERT INTO course_catalogue(course_id, course_name, department, l, t, p, s, c)
 VALUES('CY101', 'Chemistry for Engineers', 'CY', 3, 2, 1, 1, 3);
