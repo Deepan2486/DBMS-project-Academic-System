@@ -56,6 +56,8 @@ CREATE TABLE Student(
 	PRIMARY KEY (st_id)
 );
 
+
+
 --Filling course offering table
 INSERT INTO course_catalogue(course_id, course_name, department, l, t, p, s, c)
 VALUES('CY101', 'Chemistry for Engineers', 'CY', 3, 2, 1, 1, 3);
@@ -101,6 +103,15 @@ INSERT INTO instructor(ins_id, first_name, last_name, department, age, position)
 VALUES (DEFAULT, 'Subham', 'Singh', 'CH', 45, 'Associate professor');
 INSERT INTO instructor(ins_id, first_name, last_name, department, age, position)
 VALUES (DEFAULT, 'Rahul', 'Sabharwal', 'CE', 32, 'Associate professor');
+
+--Filling Student Table
+INSERT into student(st_id, first_name, last_name, department, batch, degree)
+VALUES ('2019CSB1002', 'Vanshu', 'Patil', 'CS', 2019, 'BTech'),
+('2020EEB1345', 'Ankush', 'David', 'EE', 2020, 'BTech'),
+('2020CSM1099', 'Tarun', 'Sharma', 'CS', 2020, 'MTech'),
+('2018MEB1290', 'Ritika', 'Deshpande', 'ME', 2018, 'BTech'),
+('2020EEB1001', 'Payal', 'Dhar', 'EE', 2020, 'BTech'),
+('2019MAB1054', 'Mohini', 'Soni', 'MA', 2019, 'BTech');
 
 
 CREATE TABLE timetable_slots(
