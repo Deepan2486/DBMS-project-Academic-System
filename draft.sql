@@ -343,3 +343,39 @@ end;
 $$;
 
 CALL create_student_transcripts();
+
+
+--utility function to convert grades to points
+CREATE OR REPLACE FUNCTION grade_conversion(grade varchar(10))
+RETURNS integer
+language plpgsql
+as $$
+declare
+	points integer;
+begin
+	IF grade = 'A' then
+		points := 10;
+	ELSEIF grade = 'A-' then 
+		points := 9;
+	ELSEIF grade = 'B' then 
+		points := 8;
+	ELSEIF grade = 'B-' then 
+		points := 7;
+	ELSEIF grade = 'C' then 
+		points := 6;
+	ELSEIF grade = 'C-' then 
+		points := 5;
+	ELSEIF grade = 'D' then 
+		points := 4;
+	ELSEIF grade = 'E' then 
+		points := 3;
+	ELSE 
+		points:=0;
+	END IF;
+	
+	RETURN points;
+
+end;
+$$;
+
+
