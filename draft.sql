@@ -219,12 +219,21 @@ LANGUAGE plpgsql
 as $$
 declare
 	course_table varchar(200);
+	instructor_id INT;
+	instructor_name varchar(100);
+	instructor_role varchar(100);
 begin
 	course_table:= NEW.course_id || '_section' || NEW.section || '_' || NEW.year || '_' || NEW.semester;
 	EXECUTE format (
-	'CREATE TABLE %I(st_id varchar(100), first_name varchar(100), last_name varchar(100), grade varchar(20));', course_table
-	);
+	'CREATE TABLE %I(st_id varchar(100), first_name varchar(100), last_name varchar(100), grade varchar(20));', course_table);
 	
+	instructor_id:= NEW.ins_id;
+	SELECT first_name INTO instructor_name FROM Instructor where Instructor.ins_id=NEW.ins_id;
+	
+	instructor_role:= instructor_name || '_' || instructor_id;
+	
+	EXECUTE format (
+	'GRANT ALL on %I TO %I;', course_table, instructor_role);
 	RETURN NEW;
 end;
 $$;
@@ -237,6 +246,5 @@ EXECUTE PROCEDURE _make_course_table();
 
 CALL offer_course(2, 'EE101', 2019, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');	
 CALL offer_course(9, 'CS201', 2020, 1, 1, 'E2', 'GE103', 7.50, '2019', 'CS');	
-		
 	
 	
