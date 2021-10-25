@@ -245,6 +245,18 @@ FOR EACH ROW
 EXECUTE PROCEDURE _make_course_table();
 
 CALL offer_course(2, 'EE101', 2019, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');	
-CALL offer_course(9, 'CS201', 2020, 1, 1, 'E2', 'GE103', 7.50, '2019', 'CS');	
+CALL offer_course(9, 'CS201', 2020, 1, 1, 'E2', 'GE103', 7.50, '2019', 'CS');
+
+
+
+--creating all batch advisor roles for each department
+CREATE table departments(
+	dept varchar(20) PRIMARY KEY UNIQUE
+);
+INSERT into departments(dept)
+VALUES ('CS'), ('MA'), ('EE'), ('ME'), ('CH'), ('CE'), ('GE'), ('CY'), ('PH'), ('BM');
+
+
+
 	
 	
