@@ -161,32 +161,6 @@ $BODY$;
 
 SELECT create_instructor_user();
 
-CREATE OR REPLACE PROCEDURE offer_course(course_id varchar(100), year INT, semester INT, section INT, slot varchar(50), prereq varchar(100), min_cpga numeric(5,2), batches varchar(100), depts varchar(100))
-language plpgsql
-as $$
-declare
-	flag BOOLEAN :=FALSE;
-	row_catalogue course_catalogue%ROWTYPE;
-	row_offering course_offering%ROWTYPE;
-begin
-	FOR row_catalogue in (SELECT * from course_catalogue)
-	LOOP
-		IF (row_catalogue.course_id = course_id) THEN 
-			flag=TRUE;
-			EXIT;
-			--If this course exists in catalogue, then break out of loop
-		END IF;
-	END LOOP;
-	
-	IF (flag=FALSE) THEN
-			RAISE EXCEPTION 'There is no Course with this course ID!';
-			RETURN;
-			--Course does'nt exist in catalogue
-	END IF;		
-	
-end;
-$$;
-
 
 CREATE TABLE takes(
 	
@@ -199,7 +173,46 @@ CREATE TABLE takes(
 );
 
 
-			
+
+CREATE OR REPLACE PROCEDURE offer_course(insid INT, courseid varchar(100), year INT, semester INT, section INT, slot varchar(50), prereq varchar(100), min_cgpa numeric(5,2), batches varchar(100), depts varchar(100))
+language plpgsql
+as $$
+declare
+	flag BOOLEAN :=FALSE;
+	row_catalogue course_catalogue%ROWTYPE;
+	row_offering course_offering%ROWTYPE;
+begin
+	FOR row_catalogue in (SELECT * from course_catalogue)
+	LOOP
+		IF (row_catalogue.course_id = courseid) THEN 
+			flag=TRUE;
+			EXIT;
+			--If this course exists in catalogue, then break out of loop
+		END IF;
+	END LOOP;
+	
+	IF (flag=FALSE) THEN
+			RAISE EXCEPTION 'There is no Course in the catalogue with this course ID!';
+			RETURN;
+			--Course does'nt exist in catalogue
+	END IF;	
+	
+	FOR row_offering in (SELECT * from course_offering co where co.ins_id=insid)
+	LOOP
+		IF(row_offering.timetable_slot=slot ) THEN
+			RAISE EXCEPTION 'You already have a course scheduled in this timetable slot!';
+			RETURN;
+		END IF;
+	END LOOP;
+	
+	INSERT into course_offering(course_id, ins_id, timetable_slot, section, year, semester, prerequisites, min_cgpa, eligible_batches, eligible_depts)
+	VALUES (courseid, insid, slot, section, year, semester, prereq, min_cgpa, batches, depts);
+	
+end;
+$$;
+
+
+CALL offer_course(1, 'ME101', 2019, 2, 1, 'A1', 'ME001,GE108', 7.00, '2019,2018,2017', 'ME');			
 		
 	
 	
