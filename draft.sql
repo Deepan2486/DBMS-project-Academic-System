@@ -46,7 +46,7 @@ CREATE TABLE course_offering(
 
 CREATE TABLE Student(
 	
-	st_id varchar(100),
+	st_id varchar(100) UNIQUE,
 	first_name varchar(100),
 	last_name varchar(100),
 	department varchar(50),
