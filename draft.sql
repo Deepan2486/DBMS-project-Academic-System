@@ -212,7 +212,30 @@ end;
 $$;
 
 
-CALL offer_course(1, 'ME101', 2019, 2, 1, 'A1', 'ME001,GE108', 7.00, '2019,2018,2017', 'ME');			
+CREATE OR REPLACE FUNCTION _make_course_table()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+as $$
+declare
+	course_table varchar(200);
+begin
+	course_table:= NEW.course_id || '_section' || NEW.section || '_' || NEW.year || '_' || NEW.semester;
+	EXECUTE format (
+	'CREATE TABLE %I(st_id varchar(100), first_name varchar(100), last_name varchar(100), grade varchar(20));', course_table
+	);
+	
+	RETURN NEW;
+end;
+$$;
+
+CREATE TRIGGER make_course_table 
+AFTER INSERT
+on course_offering
+FOR EACH ROW
+EXECUTE PROCEDURE _make_course_table();
+
+CALL offer_course(2, 'EE101', 2019, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');	
+CALL offer_course(9, 'CS201', 2020, 1, 1, 'E2', 'GE103', 7.50, '2019', 'CS');	
 		
 	
 	
