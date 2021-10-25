@@ -39,7 +39,7 @@ CREATE TABLE course_offering(
 	
 	PRIMARY KEY (course_id, section, year, semester),
 	
-	CONSTRAINT fk_courseid FOREIGN KEY(course_id) REFERENCES course_offering(course_id),
+	CONSTRAINT fk_courseid FOREIGN KEY(course_id) REFERENCES Course_catalogue(course_id),
 	CONSTRAINT fk_insid FOREIGN KEY(ins_id) REFERENCES instructor(ins_id)
 	
 );
@@ -186,6 +186,17 @@ begin
 	
 end;
 $$;
+
+
+CREATE TABLE takes(
+	
+	st_id varchar(100),
+	course_id varchar(50),
+	section INT,
+	timetable_slot varchar(50),
+	
+	CONSTRAINT fk_stdid FOREIGN KEY(st_id) REFERENCES student(st_id)
+);
 
 
 			
