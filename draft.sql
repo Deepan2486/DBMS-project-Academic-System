@@ -130,6 +130,7 @@ INSERT into timetable_slots(slot)
 VALUES ('M2'), ('A1'), ('A2'), ('E1'), ('E2');
 
 
+--the function to create sepearte roles/users for each instructor
 CREATE OR REPLACE FUNCTION create_instructor_user()
 RETURNS VOID
 language plpgsql
@@ -173,7 +174,7 @@ CREATE TABLE takes(
 );
 
 
-
+--procedure used by instructors to offer a course
 CREATE OR REPLACE PROCEDURE offer_course(insid INT, courseid varchar(100), year INT, semester INT, section INT, slot varchar(50), prereq varchar(100), min_cgpa numeric(5,2), batches varchar(100), depts varchar(100))
 language plpgsql
 as $$
@@ -211,7 +212,7 @@ begin
 end;
 $$;
 
-
+--trigger to make tables for each course whenever a course is offered
 CREATE OR REPLACE FUNCTION _make_course_table()
 RETURNS TRIGGER
 LANGUAGE plpgsql
