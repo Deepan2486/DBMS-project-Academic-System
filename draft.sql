@@ -256,7 +256,37 @@ CREATE table departments(
 INSERT into departments(dept)
 VALUES ('CS'), ('MA'), ('EE'), ('ME'), ('CH'), ('CE'), ('GE'), ('CY'), ('PH'), ('BM');
 
+CREATE OR REPLACE FUNCTION create_advisor_user()
+RETURNS VOID
+LANGUAGE plpgsql
+as $$
+declare
+	row_dept departments%ROWTYPE;
+	rolename varchar(100);
+	passw varchar(100);
+begin
+	FOR row_dept in (SELECT * from departments)
+	LOOP
+		rolename:='advisor_'|| row_dept.dept;
+		passw := 'pass_'|| row_dept.dept;
+		EXECUTE format(
+		'CREATE USER %I WITH
+            LOGIN
+            PASSWORD %L'
+         , rolename
+         , passw
+         );
+	END LOOP;
+	RETURN;
+end;
+$$;
+
+SELECT create_advisor_user();
 
 
+--make Dean Acad Role
+CREATE ROLE Dean_Academics
+LOGIN
+PASSWORD 'pass_dean_acad';
 	
 	
