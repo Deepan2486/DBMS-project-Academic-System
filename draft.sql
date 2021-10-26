@@ -497,15 +497,31 @@ $$;
 
 SELECT give_access_to_student();
 
-CREATE OR REPLACE PROCEDURE offer_course()
+CREATE OR REPLACE PROCEDURE register_course(id varchar(100), courseid varchar(100), sec INT)
 language plpgsql
 as $$
 declare
-	
+	row_offering course_offering%ROWTYPE;
+	flag BOOLEAN :=FALSE;
 	
 	
 begin
-
+	FOR row_offering in (SELECT * from course_offering)
+	LOOP
+		IF (row_offering.course_id = courseid) THEN 
+			flag=TRUE;
+			EXIT;
+			--If this course exists in offering, then break out of loop
+		END IF;
+	END LOOP;
+	
+	IF (flag=FALSE) THEN
+			RAISE EXCEPTION 'This course %I is not being offered!', courseid;
+			RETURN;
+			--Course does'nt exist in offering
+	END IF;	
+	
+	
 
 end;
 $$;
