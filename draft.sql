@@ -475,3 +475,24 @@ begin
 end;
 $$;
 SELECT give_access_to_instructor();
+
+CREATE OR REPLACE FUNCTION give_access_to_student()
+RETURNS VOID
+language plpgsql
+as $$
+declare
+	row_var Student%rowtype;
+	rolename varchar(100);
+begin
+	FOR row_var in (SELECT * from Student)
+	LOOP
+		rolename :=row_var.st_id;
+		EXECUTE format(
+		'GRANT SELECT ON course_offering, course_catalogue, takes
+		 TO %I;', rolename);
+	END LOOP;
+	return;
+end;
+$$;
+
+SELECT give_access_to_student();
