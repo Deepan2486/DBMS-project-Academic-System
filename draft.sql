@@ -464,9 +464,14 @@ begin
 		EXECUTE format(
 		'GRANT SELECT ON ALL TABLES IN SCHEMA PUBLIC
 		 TO %I', rolename);
+		 
+		 EXECUTE format(
+		 'GRANT SELECT, INSERT, UPDATE, DELETE ON course_offering to %I'
+			 ,rolename
+		 );
+		 
 	END LOOP;
 	return;
 end;
 $$;
-
 SELECT give_access_to_instructor();
