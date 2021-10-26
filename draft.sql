@@ -425,3 +425,25 @@ end;
 $$;
 
 CALL upload_student_history();
+
+CREATE OR REPLACE FUNCTION give_access_to_advisor()
+RETURNS VOID
+language plpgsql
+as $$
+declare
+	row_dept departments%ROWTYPE;
+	rolename varchar(100);
+begin
+	FOR row_dept in (SELECT * from departments)
+	LOOP
+		rolename:='advisor_'|| row_dept.dept;
+		EXECUTE format(
+		'GRANT SELECT ON ALL TABLES IN SCHEMA PUBLIC
+		 TO %I', rolename);
+	END LOOP;
+	
+	return;
+end;
+$$;
+
+SELECT give_access_to_advisor();
