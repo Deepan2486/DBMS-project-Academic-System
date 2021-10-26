@@ -496,3 +496,16 @@ end;
 $$;
 
 SELECT give_access_to_student();
+
+CREATE OR REPLACE PROCEDURE offer_course()
+language plpgsql
+as $$
+declare
+	
+	
+	
+begin
+
+
+end;
+$$;
