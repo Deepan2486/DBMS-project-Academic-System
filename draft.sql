@@ -447,3 +447,26 @@ end;
 $$;
 
 SELECT give_access_to_advisor();
+
+CREATE OR REPLACE FUNCTION give_access_to_instructor()
+RETURNS VOID
+language plpgsql
+as $$
+declare
+	row_var Instructor%rowtype;
+	rolename varchar(100);
+	instructor_id varchar(100);
+begin
+	FOR row_var in (SELECT * from Instructor)
+	LOOP
+		instructor_id := CAST(row_var.ins_id AS varchar);
+		rolename := row_var.first_name ||'_'|| instructor_id ;
+		EXECUTE format(
+		'GRANT SELECT ON ALL TABLES IN SCHEMA PUBLIC
+		 TO %I', rolename);
+	END LOOP;
+	return;
+end;
+$$;
+
+SELECT give_access_to_instructor();
