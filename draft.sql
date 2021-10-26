@@ -423,3 +423,5 @@ begin
 	END LOOP;
 end;
 $$;
+
+CALL upload_student_history();
