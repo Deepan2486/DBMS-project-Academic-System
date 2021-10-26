@@ -7,7 +7,7 @@ CREATE TABLE Course_Catalogue(
 	T INT,
 	P INT,
 	S INT,
-	C INT,
+	C NUMERIC(3,2),
 	
 	PRIMARY KEY (course_id)
 );
@@ -336,7 +336,7 @@ begin
 	LOOP
 		student_table=row_var.first_name || '_' || row_var.st_id ||'_'|| 'transcript';
 		EXECUTE format (
-		'CREATE TABLE %I(Course_id varchar(100), Year INT, Semester INT, Credits INT, Grade varchar(20));', student_table);
+		'CREATE TABLE %I(Course_id varchar(100), Year INT, Semester INT, Credits NUMERIC(3,2), Grade varchar(20));', student_table);
 		
 		student_role:= row_var.st_id;
 		EXECUTE format (
@@ -398,3 +398,28 @@ end;
 $$;
 
 SELECT give_access_to_dean();
+
+CREATE OR REPLACE PROCEDURE upload_student_history()
+language plpgsql
+as $$
+declare
+	row_var Student%rowtype;
+	rolename varchar(100);
+	student_table varchar(100);
+	location varchar(500);
+	delim varchar(10);
+begin
+	FOR row_var in (SELECT * from Student)
+	LOOP
+		rolename :=row_var.st_id;
+		student_table := row_var.first_name || '_' || row_var.st_id || '_' || 'transcript';
+		location := 'E:\sql_databases\dbms project\student history\' ||rolename|| '.csv';
+		delim := ',';
+		EXECUTE format(
+		'COPY %I(course_id, year, semester, credits, grade)
+		FROM %L
+		DELIMITER %L
+		CSV HEADER;', student_table, location, delim );
+	END LOOP;
+end;
+$$;
