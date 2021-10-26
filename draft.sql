@@ -396,3 +396,5 @@ begin
 	return;
 end;
 $$;
+
+SELECT give_access_to_dean();
