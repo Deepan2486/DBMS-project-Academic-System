@@ -384,3 +384,15 @@ end;
 $$;
 
 
+CREATE OR REPLACE FUNCTION give_access_to_dean()
+RETURNS void
+language plpgsql
+as $$
+begin
+	GRANT SELECT, INSERT, UPDATE, DELETE
+	ON ALL TABLES IN SCHEMA public 
+	TO dean_academics;
+	
+	return;
+end;
+$$;
