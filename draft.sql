@@ -649,12 +649,16 @@ as $$
 DECLARE
 	row_var Instructor%rowtype;
 	ticket_table varchar(100);
+	rolename varchar(100);
 BEGIN
 	FOR row_var in (SELECT * from Instructor)
 	LOOP
 		ticket_table := row_var.first_name || '_' || row_var.ins_id || '_' || 'ticket';
+		rolename := row_var.first_name || '_' || row_var.ins_id;
 		EXECUTE format(' CREATE TABLE %I(ticket_id varchar(100), st_id varchar(100), course_id varchar(100), section INT, Instructor_decision varchar(50));'
 					   , ticket_table);
+					   
+		EXECUTE format('GRANT ALL on %I to %I;', ticket_table, rolename);
 
 	END LOOP;
 END;
@@ -781,3 +785,59 @@ end;
 $$;
 
 SELECT give_access_to_student();
+
+--INCOMPLETE: THIS COPIES ALL TICKETS TO DEAN TABLE
+CREATE OR REPLACE PROCEDURE extract_ticket_dean()
+language plpgsql
+as $$
+declare
+	row_student student%ROWTYPE;
+	student_ticket varchar(100);
+begin
+	
+
+
+end;
+$$;
+
+--EXTRACTS ALL TICKETS OF THAT INSTRUCTOR
+CREATE OR REPLACE PROCEDURE extract_ticket_instructor()
+language plpgsql
+as $$
+declare
+	row_student student%ROWTYPE;
+	student_ticket_table varchar(100);
+	ins_ticket_table varchar(100);
+	insid INT;
+	rolename varchar(100);
+	rec RECORD;
+	rec1 RECORD;
+	flag BOOLEAN:= FALSE;
+begin
+	rolename :=CURRENT_ROLE;
+	ins_ticket_table := rolename || '_ticket';
+	insid= split_part(rolename, '_', 2);
+
+	FOR row_student in (SELECT * FROM Student) LOOP
+		student_ticket_table := row_student.st_id || '_ticket';
+		
+		FOR rec in EXECUTE format('SELECT * FROM %I', student_ticket_table) LOOP
+			FOR rec1 in (SELECT * from course_offering ) LOOP
+				IF (rec1.course_id=rec.course_id and rec1.section= rec.section and insid=rec1.ins_id) THEN
+					flag := TRUE;
+				END IF;
+			END LOOP;
+			
+			if (flag=TRUE) THEN
+				EXECUTE format('INSERT into %I(ticket_id, st_id, course_id,section)
+							   VALUES (%L, %L, %L, %L)', ins_ticket_table, rec.ticket_id, row_student.st_id, rec.course_id, rec.section);
+			END IF;
+			flag := FALSE;
+		END LOOP;
+	
+	END LOOP;
+	
+end;
+$$;
+
+
