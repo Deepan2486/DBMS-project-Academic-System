@@ -495,6 +495,37 @@ $$;
 
 SELECT give_access_to_student();
 
+CREATE OR REPLACE FUNCTION calculate_cgpa(id varchar(100))
+RETURNS numeric(3,2)
+language plpgsql
+as $$
+declare
+	cgpa numeric(3,2);
+	student_table varchar(100);
+	name varchar(100);
+	numerator numeric :=0;
+	grade numeric; 
+	sum_credits numeric :=0;
+	rec RECORD;
+begin
+
+	SELECT first_name into name from student where st_id=id;
+	student_table := name || '_' || id || '_' || 'transcript';
+	
+	FOR rec in EXECUTE format('SELECT grade, credits FROM %I', student_table) LOOP
+				   		grade := CAST (grade_conversion(rec.grade) as numeric);
+				   		numerator := numerator + grade*rec.credits;
+				   		sum_credits := sum_credits + rec.credits;
+				   	END LOOP;
+	
+	
+	cgpa:= numerator / sum_credits;
+	RETURN cgpa;
+end;
+$$;
+
+
+
 CREATE OR REPLACE PROCEDURE register_course( courseid varchar(100), sec INT)
 language plpgsql
 as $$
