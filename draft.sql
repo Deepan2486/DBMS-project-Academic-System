@@ -884,7 +884,7 @@ end;
 $$;
 
 
-
+--This allows instructors to give ticket response
 CREATE OR REPLACE PROCEDURE instructor_ticket_response(ticketid varchar(100), response varchar(50))
 language plpgsql
 as $$
@@ -899,6 +899,27 @@ begin
 	FOR rec in EXECUTE format('SELECT * FROM %I', ins_ticket_table) LOOP
 		IF (rec.ticket_id=ticketid) THEN
 			EXECUTE format ('UPDATE %I SET instructor_decision= %L; ', ins_ticket_table, response);
+		END IF;
+	END LOOP;
+	
+end;
+$$;
+
+----This allows advisors to give ticket response
+CREATE OR REPLACE PROCEDURE advisor_ticket_response(ticketid varchar(100), response varchar(50))
+language plpgsql
+as $$
+declare
+	advisor_ticket_table varchar(100);
+	rolename varchar(100);
+	rec RECORD;
+begin
+	rolename :=CURRENT_ROLE;
+	advisor_ticket_table := rolename || '_ticket';
+	
+	FOR rec in EXECUTE format('SELECT * FROM %I', advisor_ticket_table) LOOP
+		IF (rec.ticket_id=ticketid) THEN
+			EXECUTE format ('UPDATE %I SET advisor_decision= %L; ', advisor_ticket_table, response);
 		END IF;
 	END LOOP;
 	
