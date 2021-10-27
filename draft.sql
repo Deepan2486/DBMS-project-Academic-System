@@ -592,6 +592,18 @@ begin
 end;
 $$;
 
+--make Dean's ticket table
+CREATE OR REPLACE FUNCTION make_dean_ticket()
+RETURNS void
+language plpgsql
+as $$
+begin
+	CREATE TABLE (ticket_id varchar(100), st_id varchar(100), course_id varchar(100), section INT, Dean_decision varchar(50));
+end;
+$$;
+
+SELECT make_dean_ticket();
+
 --make tickets table for each student
 CREATE OR REPLACE FUNCTION make_student_ticket_tables()
 RETURNS void
@@ -606,7 +618,7 @@ BEGIN
 	LOOP
 		rolename :=row_var.st_id;
 		ticket_table := rolename || '_ticket';
-		EXECUTE format(' CREATE TABLE %I(ticket_id varchar(100), course_id varchar(100), section INT, dean_decision varchar(50));'
+		EXECUTE format(' CREATE TABLE %I(ticket_id varchar(100), course_id varchar(100), section INT);'
 					   , ticket_table);
 
 	END LOOP;
