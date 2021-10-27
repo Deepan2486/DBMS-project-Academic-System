@@ -882,3 +882,25 @@ begin
 	
 end;
 $$;
+
+
+
+CREATE OR REPLACE PROCEDURE instructor_ticket_response(ticketid varchar(100), response varchar(50))
+language plpgsql
+as $$
+declare
+	ins_ticket_table varchar(100);
+	rolename varchar(100);
+	rec RECORD;
+begin
+	rolename :=CURRENT_ROLE;
+	ins_ticket_table := rolename || '_ticket';
+	
+	FOR rec in EXECUTE format('SELECT * FROM %I', ins_ticket_table) LOOP
+		IF (rec.ticket_id=ticketid) THEN
+			EXECUTE format ('UPDATE %I SET instructor_decision= %L; ', ins_ticket_table, response);
+		END IF;
+	END LOOP;
+	
+end;
+$$;
