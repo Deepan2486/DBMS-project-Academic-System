@@ -840,4 +840,34 @@ begin
 end;
 $$;
 
+--EXTRACTS ALL TICKETS OF THAT ADVISOR
+CREATE OR REPLACE PROCEDURE extract_ticket_advisor()
+language plpgsql
+as $$
+declare
+	row_student student%ROWTYPE;
+	student_ticket_table varchar(100);
+	advisor_ticket_table varchar(100);
+	rolename varchar(100);
+	dept varchar(10);
+	student_dept varchar(10);
+	rec RECORD;
+begin
+	rolename :=CURRENT_ROLE;
+	advisor_ticket_table := rolename || '_ticket';
+	dept= split_part(rolename, '_', 2);
 
+	FOR row_student in (SELECT * FROM Student) LOOP
+		student_ticket_table := row_student.st_id || '_ticket';
+		student_dept := SUBSTRING (row_student.st_id, 5, 2 );
+		IF (dept=student_dept) THEN
+			FOR rec in EXECUTE format('SELECT * FROM %I', student_ticket_table) LOOP
+				EXECUTE format('INSERT into %I(ticket_id, st_id, course_id, section)
+							   VALUES (%L, %L, %L, %L)', advisor_ticket_table, rec.ticket_id, row_student.st_id, rec.course_id, rec.section);
+			END LOOP;
+		END IF;
+	
+	END LOOP;
+	
+end;
+$$;
