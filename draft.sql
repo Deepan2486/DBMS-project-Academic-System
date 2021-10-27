@@ -925,3 +925,65 @@ begin
 	
 end;
 $$;
+
+
+CREATE OR REPLACE PROCEDURE dean_copy_response()
+language plpgsql
+as $$
+declare
+	rec RECORD;
+	ticketid varchar(100);
+	advisor_table varchar(100);
+	advisor_response varchar(50);
+	ins_response varchar(50);
+	ins_table varchar(100);
+	st_dept varchar(100);
+	insid INT;
+	insname varchar(100);
+	rec1 record;
+	
+	recx RECORD;
+	recy RECORD;
+
+begin
+
+	FOR rec in (SELECT * from dean_ticket) LOOP
+	
+		--to go to advisor's table
+		ticketid=rec.ticket_id;
+		st_dept := SUBSTRING( split_part(ticketid, '_', 1), 5, 2);
+		
+		advisor_table= 'advisor_' || st_dept || '_ticket';
+		
+		FOR recx in EXECUTE format('SELECT * from %I', advisor_table) LOOP
+			if (recx.ticket_id=ticketid) THEN
+				advisor_response=recx.advisor_decision;
+			End if;
+		END LOOP;
+		
+		
+		--to go to instructor's table
+		FOR rec1 in (SELECT * from course_offering c, instructor i 
+					WHERE c.course_id=rec.course_id AND c.section=rec.section AND i.ins_id=c.ins_id) LOOP
+			insid=rec1.ins_id;
+			insname=rec1.first_name;
+			
+		END LOOP;
+		
+		ins_table= insname || '_' || insid || '_ticket';
+		
+		FOR recy in EXECUTE format('SELECT * from %I', ins_table) LOOP
+			if (recy.ticket_id=ticketid) THEN
+				ins_response=recy.instructor_decision;
+			End if;
+		END LOOP;
+					   
+					   
+		EXECUTE format('UPDATE dean_ticket SET instructor_decision=%L AND advisor_decision=%L 
+					   WHERE ticket_id=%L', ins_response, advisor_response, ticketid );
+		
+	
+	END LOOP;
+
+end;
+$$;
