@@ -701,4 +701,23 @@ SELECT make_student_ticket_tables();
 
 
 --make tickets table for each instructor
---make 
+CREATE OR REPLACE FUNCTION make_instructor_ticket_tables()
+RETURNS void
+language plpgsql
+as $$
+DECLARE
+	row_var Instructor%rowtype;
+	ticket_table varchar(100);
+BEGIN
+	FOR row_var in (SELECT * from Instructor)
+	LOOP
+		ticket_table := row_var.first_name || '_' || row_var.ins_id || '_' || 'ticket';
+		EXECUTE format(' CREATE TABLE %I(ticket_id varchar(100), st_id varchar(100), course_id varchar(100), section INT, Instructor_decision varchar(50));'
+					   , ticket_table);
+
+	END LOOP;
+END;
+$$;
+
+
+SELECT make_instructor_ticket_tables();
