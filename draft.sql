@@ -476,6 +476,7 @@ declare
 	rec1 RECORD;
 	rec2 RECORD;
 	rec3 RECORD;
+	rec4 RECORD;
 	ticket_id varchar(100);
 	ticket_table varchar(100);
 begin
@@ -554,9 +555,15 @@ begin
 			EXIT;
 		END IF;
 		prereq_course:=split_part(prereq, ',', i);
-		EXECUTE format(' IF NOT EXISTS SELECT * from %I where course_id=prereq_course THEN flag_pre=TRUE; END IF;', student_trans);
+		flag_pre :=FALSE;
 		
-		if flag_pre=TRUE THEN
+		FOR rec4 in EXECUTE format('SELECT * from %I', student_trans) LOOP
+			IF (rec4.course_id=prereq_course) THEN
+				flag_pre=TRUE;
+			END IF;
+		END LOOP;
+		
+		IF flag_pre=FALSE THEN
 			RAISE EXCEPTION 'You have not cleared % as prerequisite!', prereq_course;
 			RETURN;
 		END IF;
@@ -582,9 +589,10 @@ begin
 	
 	if (curr_credits <= (1.25 * (sem1credits + sem2credits)/2)) THEN
 		EXECUTE FORMAT ('INSERT INTO %I(course_id, section, timetable_slot)
-						VALUES (courseid, sec, course_credit);', student_takes_table);
+						VALUES (%L, %L, %L);', student_takes_table, courseid, sec, course_credit  );
 		
 	ELSE
+		--ticket generation
 		ticket_id := rolename || '_' || courseid || '_' || sec;
 		ticket_table:= rolename || '_ticket';
 		
@@ -596,7 +604,6 @@ begin
 	
 end;
 $$;
-
 --make Dean's ticket table
 CREATE OR REPLACE FUNCTION make_dean_ticket()
 RETURNS void
@@ -756,13 +763,17 @@ as $$
 declare
 	row_var Student%rowtype;
 	rolename varchar(100);
+	ticket_table varchar(100);
 begin
 	FOR row_var in (SELECT * from Student)
 	LOOP
 		rolename :=row_var.st_id;
+		ticket_table:= rolename || '_ticket';
 		EXECUTE format(
-		'GRANT SELECT ON course_offering, course_catalogue
+		'GRANT SELECT ON course_offering, course_catalogue, student
 		 TO %I;', rolename);
+		 
+		 EXECUTE format('GRANT ALL ON %I to %I;', ticket_table, rolename );
 		 
 	END LOOP;
 	return;
