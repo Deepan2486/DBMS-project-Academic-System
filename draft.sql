@@ -583,7 +583,11 @@ begin
 						VALUES (courseid, sec, course_credit);', student_takes_table);
 		
 	ELSE
-		--generate ticket
+		ticket_id := rolename || '_' || courseid || '_' || sec;
+		ticket_table:= rolename || '_ticket';
+		
+		EXECUTE format('INSERT into %i(ticket_id, course_id, section) 
+					   VALUES (ticket_id, courseid, sec);', ticket_table);
 	
 	END IF;
 	
