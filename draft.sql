@@ -604,6 +604,7 @@ begin
 	
 end;
 $$;
+
 --make Dean's ticket table
 CREATE OR REPLACE FUNCTION make_dean_ticket()
 RETURNS void
@@ -786,17 +787,27 @@ $$;
 
 SELECT give_access_to_student();
 
---INCOMPLETE: THIS COPIES ALL TICKETS TO DEAN TABLE
+--THIS COPIES ALL TICKETS TO DEAN  Ticket TABLE
 CREATE OR REPLACE PROCEDURE extract_ticket_dean()
 language plpgsql
 as $$
 declare
 	row_student student%ROWTYPE;
-	student_ticket varchar(100);
+	student_ticket_table varchar(100);
+	rec RECORD;
 begin
+	FOR row_student in (SELECT * FROM Student) LOOP
+		student_ticket_table := row_student.st_id || '_ticket';
+		
+		FOR rec in EXECUTE format('SELECT * FROM %I', student_ticket_table) LOOP
+		
+			EXECUTE format('INSERT into dean_ticket(ticket_id, st_id, course_id,section)
+							   VALUES (%L, %L, %L, %L)', rec.ticket_id, row_student.st_id, rec.course_id, rec.section);
+		
+		END LOOP;
 	
-
-
+	END LOOP;
+	
 end;
 $$;
 
