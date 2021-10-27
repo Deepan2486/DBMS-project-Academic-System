@@ -490,6 +490,10 @@ begin
 		EXECUTE format(
 		'GRANT SELECT ON course_offering, course_catalogue, takes
 		 TO %I;', rolename);
+		 
+		EXECUTE format(
+		'GRANT INSERT, UPDATE, DELETE ON takes
+		 TO %I;', rolename);
 	END LOOP;
 	return;
 end;
