@@ -527,7 +527,6 @@ end;
 $$;
 
 
-
 CREATE OR REPLACE PROCEDURE register_course( courseid varchar(100), sec INT)
 language plpgsql
 as $$
@@ -548,16 +547,22 @@ declare
 	el_cgpa numeric(3,2);
 	prereq varchar(200);
 	n_prereq INT :=0;
+	course_credit numeric;
 	prereq_course varchar(50);
 	i INT:=1;
 	flag_pre BOOLEAN :=FALSE;
 	ch varchar(1);
+	sem1credits numeric :=0;
+	sem2credits numeric :=0;
+	curr_credits numeric :=0;
+	rec1 RECORD;
+	rec2 RECORD;
 begin
 	
 	--checking if course is being offered
 	FOR row_offering in (SELECT * from course_offering)
 	LOOP
-		IF (row_offering.course_id = courseid) THEN 
+		IF (row_offering.course_id = courseid and row_offering.section= sec ) THEN 
 			flag_exists := TRUE;
 			slot := row_offering.timetable_slot;
 			el_depts := row_offering.eligible_depts;
@@ -569,7 +574,7 @@ begin
 	END LOOP;
 	
 	IF (flag_exists=FALSE) THEN
-			RAISE EXCEPTION 'This course % is not being offered!', courseid;
+			RAISE EXCEPTION 'This course % is not being offered, or not being offered in this section!', courseid;
 			RETURN;
 	END IF;	
 	
@@ -639,9 +644,33 @@ begin
 		i:=i+1;
 	END LOOP;
 	
-	--
+	--1.25 credit limit rule
+	FOR rec1 in EXECUTE format('SELECT * FROM %I', student_trans) LOOP
+		IF (year=2021 AND semester=1) THEN
+			sem1credits := sem1credits + rec1.credits;
+		ELSEIF (year=2021 AND semester=2) THEN
+			sem2credits := sem2credits + rec1.credits;
+		END IF;
+	END LOOP;
+	
+	FOR rec2 in EXECUTE format('SELECT * FROM %I', student_takes_table) LOOP
+		curr_credits := curr_credits + rec2.credits;
+	END LOOP;
+	
+	SELECT c INTO course_credit FROM course_catalogue WHERE course_id=courseid;
+	
+	curr_credits := curr_credits + course_credit;
+	
+	if (curr_credits <= (1.25 * (sem1credits + sem2credits)/2)) THEN
+		EXECUTE FORMAT ('INSERT INTO %i(course_id, section, timetable_slot)
+						VALUES (courseid, sec, course_credit);', student_takes_table);
+		
+	ELSE
+		--generate ticket
+	
+	END IF;
 	
 	
-	
+
 end;
 $$;
