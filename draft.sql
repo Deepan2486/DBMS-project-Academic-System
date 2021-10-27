@@ -495,6 +495,8 @@ $$;
 
 SELECT give_access_to_student();
 
+
+--function to calculate resultant cgpa of student
 CREATE OR REPLACE FUNCTION calculate_cgpa(id varchar(100))
 RETURNS numeric(3,2)
 language plpgsql
