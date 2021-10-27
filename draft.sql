@@ -542,12 +542,23 @@ begin
 		
 	IF (flag_slot=TRUE) THEN
 		RAISE EXCEPTION 'You already have a registered course in this time-table slot!';
+		RETURN;
 	END IF;
 	
 	
 	--checking if department and batch is eligible
 	st_dept=SUBSTRING (rolename,5,2 );
 	st_batch=SUBSTRING (rolename, 4 );
+	
+	IF el_batches not like '%' || st_batch || '%' THEN
+		RAISE EXCEPTION 'Your batch % is not eligible !', st_batch;
+		RETURN;
+	END IF;
+	
+	IF el_depts not like '%' || st_dept || '%' THEN
+		RAISE EXCEPTION 'Your department % is not eligible !', st_dept;
+		RETURN;
+	END IF;
 	
 	
 end;
