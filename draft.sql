@@ -444,6 +444,7 @@ end;
 $$;
 
 
+
 CREATE OR REPLACE PROCEDURE register_course( courseid varchar(100), sec INT)
 language plpgsql
 as $$
@@ -474,6 +475,9 @@ declare
 	curr_credits numeric :=0;
 	rec1 RECORD;
 	rec2 RECORD;
+	rec3 RECORD;
+	ticket_id varchar(100);
+	ticket_table varchar(100);
 begin
 	
 	--checking if course is being offered
@@ -502,18 +506,17 @@ begin
 	student_trans:=name || '_' || rolename || '_' || 'transcript';
 	
 	
-	EXECUTE FORMAT( 'IF EXISTS (select * from %I WHERE timetable_slot=slot ) THEN
-		flag_slot=TRUE; END IF;', student_takes);
-		
-	IF (flag_slot=TRUE) THEN
-		RAISE EXCEPTION 'You already have a registered course in this time-table slot!';
-		RETURN;
-	END IF;
+	FOR rec3 in EXECUTE FORMAT( 'select * from %I ', student_takes_table) LOOP
+		if (rec.timetable_slot=slot) THEN
+		 	RAISE EXCEPTION 'You already have a registered course in this time-table slot!';
+			RETURN;
+		END IF;
+	END LOOP;
 	
 	
 	--checking if department and batch is eligible
 	st_dept=SUBSTRING (rolename,5,2 );
-	st_batch=SUBSTRING (rolename, 4 );
+	st_batch=SUBSTRING (rolename,1,4 );
 	
 	IF el_batches not like '%' || st_batch || '%' THEN
 		RAISE EXCEPTION 'Your batch % is not eligible !', st_batch;
@@ -550,7 +553,6 @@ begin
 		IF (i>n_prereq) THEN 
 			EXIT;
 		END IF;
-
 		prereq_course:=split_part(prereq, ',', i);
 		EXECUTE format(' IF NOT EXISTS SELECT * from %I where course_id=prereq_course THEN flag_pre=TRUE; END IF;', student_trans);
 		
@@ -563,9 +565,9 @@ begin
 	
 	--1.25 credit limit rule
 	FOR rec1 in EXECUTE format('SELECT * FROM %I', student_trans) LOOP
-		IF (year=2021 AND semester=1) THEN
+		IF (rec1.year=2021 AND rec1.semester=1) THEN
 			sem1credits := sem1credits + rec1.credits;
-		ELSEIF (year=2021 AND semester=2) THEN
+		ELSEIF (rec1.year=2021 AND rec1.semester=2) THEN
 			sem2credits := sem2credits + rec1.credits;
 		END IF;
 	END LOOP;
@@ -579,20 +581,19 @@ begin
 	curr_credits := curr_credits + course_credit;
 	
 	if (curr_credits <= (1.25 * (sem1credits + sem2credits)/2)) THEN
-		EXECUTE FORMAT ('INSERT INTO %i(course_id, section, timetable_slot)
+		EXECUTE FORMAT ('INSERT INTO %I(course_id, section, timetable_slot)
 						VALUES (courseid, sec, course_credit);', student_takes_table);
 		
 	ELSE
 		ticket_id := rolename || '_' || courseid || '_' || sec;
 		ticket_table:= rolename || '_ticket';
 		
-		EXECUTE format('INSERT into %i(ticket_id, course_id, section) 
-					   VALUES (ticket_id, courseid, sec);', ticket_table);
+		EXECUTE format('INSERT into %I(ticket_id, course_id, section) 
+					   VALUES (%L, %L, %L);', ticket_table,ticket_id, courseid, sec);
 	
 	END IF;
 	
 	
-
 end;
 $$;
 
