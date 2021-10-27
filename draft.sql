@@ -499,21 +499,30 @@ CREATE OR REPLACE PROCEDURE register_course( courseid varchar(100), sec INT)
 language plpgsql
 as $$
 declare
-	rolename varchar(100);
+	rolename varchar(100)=CURRENT_ROLE;
+	name varchar(100);
 	row_offering course_offering%ROWTYPE;
-	row_takes takes%ROWTYPE;
+	student_takes_table varchar(100);
 	flag_exists BOOLEAN :=FALSE;
 	flag_slot BOOLEAN :=FALSE;
-	timetable_slot varchar(50);
+	slot varchar(50);
+	st_dept varchar(50);
+	st_batch varchar(50);
+	el_depts varchar(100);
+	el_batches varchar(100);
+	el_cgpa numeric(3,2);
+	prereq varchar(200);
 begin
-	rolename=CURRENT_ROLE;
 	
 	--checking if course is being offered
 	FOR row_offering in (SELECT * from course_offering)
 	LOOP
 		IF (row_offering.course_id = courseid) THEN 
-			flag_exists=TRUE;
-			timetable_slot=row_offering.timetable_slot;
+			flag_exists := TRUE;
+			slot := row_offering.timetable_slot;
+			el_depts := row_offering.eligible_depts;
+			el_batches := row_offering.eligible_batches;
+			el_cgpa := row_offering.min_cgpa;
 			EXIT;
 		END IF;
 	END LOOP;
@@ -524,9 +533,22 @@ begin
 	END IF;	
 	
 	--checking if timetable slot is clashing
-	FOR row_takes in (SELECT * from takes)
-	LOOP
+	SELECT first_name into name from student where st_id=rolename;
 	
-
+	student_takes_table:= name || '_' || rolename || '_' || 'takes';
+	
+	EXECUTE FORMAT( 'IF EXISTS (select * from %I WHERE timetable_slot=slot ) THEN
+		flag_slot=TRUE; END IF;', student_takes);
+		
+	IF (flag_slot=TRUE) THEN
+		RAISE EXCEPTION 'You already have a registered course in this time-table slot!';
+	END IF;
+	
+	
+	--checking if department and batch is eligible
+	st_dept=SUBSTRING (rolename,5,2 );
+	st_batch=SUBSTRING (rolename, 4 );
+	
+	
 end;
 $$;
