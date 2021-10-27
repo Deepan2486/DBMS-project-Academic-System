@@ -536,15 +536,22 @@ declare
 	name varchar(100);
 	row_offering course_offering%ROWTYPE;
 	student_takes_table varchar(100);
+	student_trans varchar(100);
 	flag_exists BOOLEAN :=FALSE;
 	flag_slot BOOLEAN :=FALSE;
 	slot varchar(50);
 	st_dept varchar(50);
 	st_batch varchar(50);
+	st_cgpa numeric(3,2);
 	el_depts varchar(100);
 	el_batches varchar(100);
 	el_cgpa numeric(3,2);
 	prereq varchar(200);
+	n_prereq INT :=0;
+	prereq_course varchar(50);
+	i INT:=1;
+	flag_pre BOOLEAN :=FALSE;
+	ch varchar(1);
 begin
 	
 	--checking if course is being offered
@@ -556,6 +563,7 @@ begin
 			el_depts := row_offering.eligible_depts;
 			el_batches := row_offering.eligible_batches;
 			el_cgpa := row_offering.min_cgpa;
+			prereq:=row_offering.prerequisites;
 			EXIT;
 		END IF;
 	END LOOP;
@@ -569,6 +577,8 @@ begin
 	SELECT first_name into name from student where st_id=rolename;
 	
 	student_takes_table:= name || '_' || rolename || '_' || 'takes';
+	student_trans:=name || '_' || rolename || '_' || 'transcript';
+	
 	
 	EXECUTE FORMAT( 'IF EXISTS (select * from %I WHERE timetable_slot=slot ) THEN
 		flag_slot=TRUE; END IF;', student_takes);
@@ -592,6 +602,45 @@ begin
 		RAISE EXCEPTION 'Your department % is not eligible !', st_dept;
 		RETURN;
 	END IF;
+	
+	
+	--chceking min cgpa
+	st_cgpa=calculate_cgpa(rolename);
+	IF (st_cgpa < el_cgpa) THEN
+		RAISE EXCEPTION 'Your cgpa % is not enough for this course!', st_cgpa;
+		RETURN;
+	END IF;
+	
+	--checking course prereqs
+	FOREACH ch IN ARRAY regexp_split_to_array(prereq, '')
+	LOOP
+  		IF ch=',' THEN n_prereq :=n_prereq+1;
+		END IF;
+	END LOOP;
+	
+	IF prereq='' THEN
+		n_prereq=0;
+	ELSE
+		n_prereq=n_prereq+1;
+	END IF;
+	
+	LOOP
+		IF (i>n_prereq) THEN 
+			EXIT;
+		END IF;
+
+		prereq_course:=split_part(prereq, ',', i);
+		EXECUTE format(' IF NOT EXISTS SELECT * from %I where course_id=prereq_course THEN flag_pre=TRUE; END IF;', student_trans);
+		
+		if flag_pre=TRUE THEN
+			RAISE EXCEPTION 'You have not cleared % as prerequisite!', prereq_course;
+			RETURN;
+		END IF;
+		i:=i+1;
+	END LOOP;
+	
+	--
+	
 	
 	
 end;
