@@ -163,17 +163,6 @@ $BODY$;
 SELECT create_instructor_user();
 
 
-CREATE TABLE takes(
-	
-	st_id varchar(100),
-	course_id varchar(50),
-	section INT,
-	timetable_slot varchar(50),
-	
-	CONSTRAINT fk_stdid FOREIGN KEY(st_id) REFERENCES student(st_id)
-);
-
-
 --procedure used by instructors to offer a course
 CREATE OR REPLACE PROCEDURE offer_course(insid INT, courseid varchar(100), year INT, semester INT, section INT, slot varchar(50), prereq varchar(100), min_cgpa numeric(5,2), batches varchar(100), depts varchar(100))
 language plpgsql
@@ -331,16 +320,24 @@ declare
 	student_table varchar(100);
 	row_var Student%rowtype;
 	student_role varchar(100);
+	student_takes varchar(100);
 begin
 	FOR row_var in (SELECT * from Student)
 	LOOP
-		student_table=row_var.first_name || '_' || row_var.st_id ||'_'|| 'transcript';
+		student_table:=row_var.first_name || '_' || row_var.st_id ||'_'|| 'transcript';
+		student_takes:=row_var.first_name || '_' || row_var.st_id ||'_'|| 'takes';
 		EXECUTE format (
 		'CREATE TABLE %I(Course_id varchar(100), Year INT, Semester INT, Credits NUMERIC(3,2), Grade varchar(20));', student_table);
 		
+		EXECUTE format (
+		'CREATE TABLE %I(Course_id varchar(100), section INT, timetable_slot varchar(50));', student_takes);
+		
 		student_role:= row_var.st_id;
 		EXECUTE format (
-		'GRANT SELECT on %I TO %I;', student_table, student_role);	
+		'GRANT SELECT on %I TO %I;', student_table, student_role);
+		
+		EXECUTE format (
+		'GRANT SELECT, INSERT on %I TO %I;', student_takes, student_role);
 	END LOOP;
 	RETURN;
 
@@ -488,12 +485,9 @@ begin
 	LOOP
 		rolename :=row_var.st_id;
 		EXECUTE format(
-		'GRANT SELECT ON course_offering, course_catalogue, takes
+		'GRANT SELECT ON course_offering, course_catalogue
 		 TO %I;', rolename);
 		 
-		EXECUTE format(
-		'GRANT INSERT, UPDATE, DELETE ON takes
-		 TO %I;', rolename);
 	END LOOP;
 	return;
 end;
@@ -507,25 +501,31 @@ as $$
 declare
 	rolename varchar(100);
 	row_offering course_offering%ROWTYPE;
-	flag BOOLEAN :=FALSE;
+	row_takes takes%ROWTYPE;
+	flag_exists BOOLEAN :=FALSE;
+	flag_slot BOOLEAN :=FALSE;
+	timetable_slot varchar(50);
 begin
 	rolename=CURRENT_ROLE;
+	
+	--checking if course is being offered
 	FOR row_offering in (SELECT * from course_offering)
 	LOOP
 		IF (row_offering.course_id = courseid) THEN 
-			flag=TRUE;
+			flag_exists=TRUE;
+			timetable_slot=row_offering.timetable_slot;
 			EXIT;
-			--If this course exists in offering, then break out of loop
 		END IF;
 	END LOOP;
 	
-	IF (flag=FALSE) THEN
+	IF (flag_exists=FALSE) THEN
 			RAISE EXCEPTION 'This course % is not being offered!', courseid;
 			RETURN;
-			--Course does'nt exist in offering
 	END IF;	
 	
-	
+	--checking if timetable slot is clashing
+	FOR row_takes in (SELECT * from takes)
+	LOOP
 	
 
 end;
