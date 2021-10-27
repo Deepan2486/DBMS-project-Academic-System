@@ -598,7 +598,7 @@ RETURNS void
 language plpgsql
 as $$
 begin
-	CREATE TABLE (ticket_id varchar(100), st_id varchar(100), course_id varchar(100), section INT, Dean_decision varchar(50));
+	CREATE TABLE dean_ticket(ticket_id varchar(100), st_id varchar(100), course_id varchar(100), section INT, Dean_decision varchar(50));
 end;
 $$;
 
