@@ -1177,3 +1177,29 @@ begin
 end;
 $$;
 
+
+CREATE OR REPLACE PROCEDURE report_generation(stid varchar(100))
+language plpgsql
+as $$
+declare
+	st_trans_table varchar(100);
+	st_cgpa numeric(3,2);
+	rec RECORD;
+	rec1 RECORD;
+begin
+	FOR rec in (select * from Student) LOOP
+		if(rec.st_id =stid ) THEN
+			st_trans_table:= rec.first_name || '_' || rec.st_id || '_' || 'transcript';
+			st_cgpa=calculate_cgpa(stid);
+			
+		FOR rec1 in EXECUTE FORMAT('SELECT * FROM %I', st_trans_table) LOOP
+			RAISE NOTICE 'course: %       year: %         sem: %        credits: %       grade:  %', rec1.course_id, rec1.year, rec1.semester, rec1.credits, rec1.grade; 
+		END LOOP;
+		
+		RAISE NOTICE 'CGPA: %', st_cgpa;
+		end if;
+	
+	END LOOP;
+
+end;
+$$;
