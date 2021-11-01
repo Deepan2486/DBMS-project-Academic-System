@@ -978,12 +978,29 @@ begin
 			End if;
 		END LOOP;
 					   
-					   
-		EXECUTE format('UPDATE dean_ticket SET instructor_decision=%L AND advisor_decision=%L 
-					   WHERE ticket_id=%L', ins_response, advisor_response, ticketid );
 		
+		EXECUTE format('UPDATE dean_ticket SET instructor_decision=%L WHERE ticket_id=%L', ins_response, ticketid );
+		EXECUTE format('UPDATE dean_ticket SET advisor_decision=%L WHERE ticket_id=%L', advisor_response, ticketid );
 	
 	END LOOP;
 
 end;
 $$;
+
+CALL dean_copy_response();
+
+CREATE OR REPLACE PROCEDURE dean_ticket_response(ticketid varchar(100), response varchar(50))
+language plpgsql
+as $$
+declare
+	rec RECORD;
+begin
+	
+	FOR rec in (SELECT * FROM dean_ticket) LOOP
+		EXECUTE format ('UPDATE dean_ticket SET dean_decision= %L WHERE ticket_id=%L; ', response, ticketid);
+	END LOOP;
+	
+end;
+$$;
+
+
