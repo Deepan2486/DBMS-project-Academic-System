@@ -1084,3 +1084,46 @@ end;
 $$;
 
 CALL copy_to_course_tables();
+
+
+CREATE OR REPLACE PROCEDURE upload_grades( course_id varchar(100), section INT, year INT, semester INT)
+language plpgsql
+as $$
+declare
+	course_table varchar(100);
+	location varchar(100);
+	delim varchar(10);
+	rec1 RECORD;
+	rec2 RECORD;
+begin
+	course_table := course_id || '_section' || section || '_' || year || '_' || semester;
+	
+	location := 'E:\sql_databases\dbms project\grades\' ||course_table|| '.csv';
+	delim := ',';
+	
+	CREATE TABLE dummy(
+		st_id varchar(100) PRIMARY KEY UNIQUE,
+		first_name varchar(100),
+		last_name varchar(100),
+		grade varchar(20)
+	);
+	
+	EXECUTE format(
+		'COPY dummy(st_id, first_name, last_name, grade)
+		FROM %L
+		DELIMITER %L
+		CSV HEADER;', location, delim );
+	
+	
+	FOR rec1 in (select * from dummy) LOOP
+			FOR rec2 in EXECUTE FORMAT('select * from %I', course_table) LOOP
+				if (rec1.st_id=rec2.st_id) THEN
+					EXECUTE FORMAT ('UPDATE %I SET grade=%L WHERE st_id=%L;', 
+								   course_table, rec1.grade, rec1.st_id);
+				end if;
+			END LOOP;
+	
+	END LOOP;
+	DROP TABLE IF EXISTS dummy;
+end;
+$$;
