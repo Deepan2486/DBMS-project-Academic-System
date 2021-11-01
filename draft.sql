@@ -1053,3 +1053,34 @@ AFTER UPDATE
 on dean_ticket
 FOR EACH ROW
 EXECUTE PROCEDURE _dean_decision();
+
+
+
+CREATE OR REPLACE PROCEDURE copy_to_course_tables()
+language plpgsql
+as $$
+declare
+	st_takes_table varchar(100);
+	course_table varchar(100);
+	rec RECORD;
+	rec1 RECORD;
+
+begin
+	FOR rec in (select * from Student) LOOP
+		st_takes_table := rec.first_name || '_' || rec.st_id || '_' || 'takes';
+		
+		FOR rec1 in EXECUTE FORMAT ('select * from %I', st_takes_table) LOOP
+			course_table := rec1.course_id || '_section' || rec1.section || '_2022_1';
+			
+			EXECUTE format ('INSERT into %I(st_id, first_name, last_name) VALUES (%L, %L, %L);', 
+						   course_table,rec.st_id, rec.first_name, rec.last_name);
+						   
+		END LOOP;
+	
+	
+	END LOOP;
+
+end;
+$$;
+
+CALL copy_to_course_tables();
