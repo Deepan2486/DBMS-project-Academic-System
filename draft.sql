@@ -1127,3 +1127,53 @@ begin
 	DROP TABLE IF EXISTS dummy;
 end;
 $$;
+
+
+CREATE OR REPLACE PROCEDURE copy_grades_to_transcript()
+language plpgsql
+as $$
+declare
+	course_table varchar(100);
+	st_trans_table varchar(100);
+	delim varchar(10);
+	rec1 RECORD;
+	rec2 RECORD;
+	rec3 RECORD;
+	flag BOOLEAN:=FALSE;
+	cred numeric;
+begin
+	if (CURRENT_ROLE <> 'dean_academics' ) THEN
+		RAISE EXCEPTION 'You are not the Dean Academics. Access denied. ';
+		RETURN;
+		
+	end if;
+	
+	FOR rec1 in (select * from course_offering) LOOP
+		course_table:= rec1.course_id || '_section' || rec1.section || '_' || rec1.year || '_' || rec1.semester;
+		
+		FOR rec2 in EXECUTE FORMAT ('select * from %I', course_table) LOOP
+			st_trans_table:= rec2.first_name || '_' || rec2.st_id || '_' || 'transcript';
+			
+			FOR rec3 in execute format ('select * from %I', st_trans_table) LOOP
+				if(rec3.course_id=rec1.course_id and rec3.year=rec1.year and rec3.semester=rec1.semester) THEN
+					flag:= TRUE;
+				end if;			
+			END LOOP;
+			
+			if (flag=FALSE) THEN
+			
+				SELECT C into cred FROM course_catalogue where course_catalogue.course_id=rec1.course_id;
+				
+				EXECUTE FORMAT ('INSERT INTO %I(course_id, year, semester, credits, grade) VALUES(%L,%L,%L,%L,%L)',
+						   st_trans_table, rec1.course_id, rec1.year, rec1.semester, cred ,rec2.grade);
+			end if;
+			
+			flag :=FALSE;
+		
+		END LOOP;
+	END LOOP;
+	
+	
+end;
+$$;
+
