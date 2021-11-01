@@ -1004,3 +1004,52 @@ end;
 $$;
 
 
+CREATE OR REPLACE FUNCTION _dean_decision()
+RETURNS trigger
+language plpgsql
+as $$
+declare
+	dean_response varchar(50);
+	course varchar(50);
+	ticketid varchar(100);
+	sec INT;
+	stname varchar(100);
+	stid varchar(100);
+	st_takes varchar(200);
+	slot varchar(50);
+	flag BOOLEAN:=FALSE;
+	rec RECORD;
+begin
+	
+	IF (NEW.dean_decision = 'YES') THEN
+		ticketid=NEW.ticket_id;
+		stid=split_part(ticketid, '_', 1);
+		course:= split_part(ticketid, '_', 2);
+		sec := split_part(ticketid, '_', 3);
+		
+		SELECT first_name INTO stname from Student where Student.st_id=stid;
+		st_takes := stname || '_' || stid || '_' || 'takes';
+		
+		SELECT timetable_slot into slot from course_offering where course_offering.course_id=course and course_offering.section=sec;
+		
+		FOR rec in EXECUTE FORMAT('select * from %I', st_takes) LOOP
+			if (rec.course_id=course AND rec.section=sec) THEN
+				flag=TRUE;
+			end if;
+		END LOOP;
+		
+		if(flag=FALSE) then
+			EXECUTE format ('INSERT INTO %I(course_id, section, timetable_slot) VALUES(%L, %L, %L);', st_takes, course, sec, slot);
+		end if;
+		flag := FALSE;
+	END IF;
+	
+	RETURN NEW;
+end;
+$$;
+
+CREATE TRIGGER dean_decision
+AFTER UPDATE
+on dean_ticket
+FOR EACH ROW
+EXECUTE PROCEDURE _dean_decision();
