@@ -1244,11 +1244,14 @@ begin
 			 ,rolename
 		 );
 		 
+		 EXECUTE format('ALTER ROLE %I with SUPERUSER;', rolename);
+		 
 	END LOOP;
 	return;
 end;
 $$;
 SELECT give_access_to_instructor();
+
 
 CREATE OR REPLACE FUNCTION give_access_to_student()
 RETURNS VOID
