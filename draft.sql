@@ -78,7 +78,32 @@ VALUES('GE111', 'EVS', 'GE', 3, 2, 1, 1, 3);
 INSERT INTO course_catalogue(course_id, course_name, department, l, t, p, s, c)
 VALUES('MA102', 'Linear Algebra', 'MA', 3, 2, 1, 1, 3);
 INSERT INTO course_catalogue(course_id, course_name, department, l, t, p, s, c)
-VALUES('CH101', 'Introduction to Chemical Engineering', 'CH', 3, 2, 1, 1, 3);
+VALUES('CH101', 'Introduction to Chemical Engineering', 'CH', 3, 2, 1, 1, 3),
+('CH201', 'Thermodynamics', 'CH', 3, 2, 1, 1, 3),
+('CS203', 'Digital Logic Design', 'CS', 3, 2, 1, 1, 4),
+('CS204', 'Computer Architecture', 'CS', 3, 2, 1, 1, 4),
+('EE201', 'Digital Electronics', 'EE', 3, 2, 1, 1, 3),
+('EE202', 'Analog Design', 'EE', 3, 2, 1, 1, 4),
+('EE301', 'Power Systems', 'EE', 3, 2, 1, 1, 4),
+('ME201', 'Machine Theory', 'ME', 3, 2, 1, 1, 3),
+('ME303', 'Fluid mechanics', 'ME', 3, 2, 1, 1, 4),
+('MA201', 'Differential equations', 'MA', 3, 2, 1, 1, 3),
+('MA202', 'Statistics', 'MA', 3, 2, 1, 1, 3.5),
+('CY202', 'Organic Chemistry', 'CY', 3, 2, 1, 1, 3),
+('CY522', 'Chemical Kinetics', 'CY', 3, 2, 1, 1, 3.5),
+('CY303', 'Biochemistry', 'CY', 3, 2, 1, 1, 4),
+('CY522', 'Chemical Kinetics', 'CY', 3, 2, 1, 1, 3.5),
+('PH101', 'Physics for Engineers', 'PH', 3, 2, 1, 1, 4.5),
+('PH202', 'Electromagnetism', 'PH', 3, 2, 1, 1, 3),
+('PH301', 'Nuclear Physics', 'PH', 3, 2, 1, 1, 3.5),
+('PH454', 'Optics', 'PH', 3, 2, 1, 1, 3),
+('CE101', 'Introduction to Civil Engineering', 'CE', 3, 2, 1, 1, 3),
+('CE222', 'Structural mechanics', 'CE', 3, 2, 1, 1, 4),
+('CE304', 'Steel structures', 'CE', 3, 2, 1, 1, 3),
+('BM101', 'Introduction to biomechanics', 'BM', 3, 2, 1, 1, 3),
+('BM201', 'Immunology', 'BM', 3, 2, 1, 1, 4);
+
+
 
 --Filling Instructor table
 INSERT INTO instructor(ins_id, first_name, last_name, department, age, position)
