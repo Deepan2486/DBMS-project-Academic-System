@@ -1219,7 +1219,7 @@ begin
 		rolename :=row_var.st_id;
 		ticket_table:= rolename || '_ticket';
 		EXECUTE format(
-		'GRANT SELECT ON course_offering, course_catalogue, student
+		'GRANT SELECT ON course_offering, course_catalogue, student, dean_ticket
 		 TO %I;', rolename);
 		 
 		 EXECUTE format('GRANT ALL ON %I to %I;', ticket_table, rolename );
