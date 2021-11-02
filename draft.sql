@@ -270,16 +270,16 @@ on course_offering
 FOR EACH ROW
 EXECUTE PROCEDURE _make_course_table();
 
-CALL offer_course(2, 'EE201', 2022, 1, 1, 'M1', 'GE104', 5.00, '2019', 'EE');	
-CALL offer_course(1, 'EE201', 2022, 1, 2, 'M1', 'GE104', 5.00, '2019,2020,2021', 'EE');	
+CALL offer_course(2, 'EE201', 2022, 1, 1, 'M1', 'EE101', 5.00, '2019', 'EE');	
+CALL offer_course(1, 'EE201', 2022, 1, 2, 'M1', 'EE101', 5.00, '2019,2020,2021', 'EE');	
 CALL offer_course(7, 'CS201', 2022, 1, 1, 'E2', 'GE103', 7.50, '2019,2020', 'CS');
 CALL offer_course(13, 'MA102', 2022, 1, 1, 'A1', 'MA101', 7.00, '2019,2020', 'MA,CS,EE');
 CALL offer_course(5, 'CH101', 2022, 1, 1, 'E1', '', 7.50, '2019,2020,2021', 'CH');
 CALL offer_course(10, 'ME201', 2022, 1, 2, 'A1', 'ME101', 7.50, '2018,2019,2020,2021', 'ME');
 CALL offer_course(5, 'CY101', 2022, 1, 1, 'M2', '', 7.00, '2018,2019,2020,2021', 'CS,EE,MA,CH');
-CALL offer_course(8, 'CS301', 2022, 1, 1, 'A3', 'CS201', 7.50, '2020,2021', 'CS');
-CALL offer_course(6, 'CS301', 2022, 1, 2, 'A3', 'CS201', 7.50, '2020,2021', 'CS');
-CALL offer_course(8, 'CS302', 2022, 1, 1, 'E1', 'CS202', 7.00, '2020,2021', 'CS,EE');
+CALL offer_course(8, 'CS301', 2022, 1, 1, 'A3', 'CS201', 7.50, '2019,2020,2021', 'CS');
+CALL offer_course(6, 'CS301', 2022, 1, 2, 'A3', 'CS201', 7.50, '2019,2020,2021', 'CS');
+CALL offer_course(8, 'CS302', 2022, 1, 1, 'E1', 'CS202', 7.00, '2019,2020,2021', 'CS,EE');
 CALL offer_course(3, 'CS303', 2022, 1, 1, 'A3', 'CS203', 7.00, '2019,2020,2021', 'CS,EE');
 
 
@@ -677,7 +677,7 @@ RETURNS void
 language plpgsql
 as $$
 begin
-	CREATE TABLE dean_ticket(ticket_id varchar(100), st_id varchar(100), course_id varchar(100), section INT, Dean_decision varchar(50));
+	CREATE TABLE dean_ticket(ticket_id varchar(100), st_id varchar(100), course_id varchar(100), section INT, instructor_decision varchar(100), advisor_decision varchar(100), Dean_decision varchar(50));
 end;
 $$;
 
