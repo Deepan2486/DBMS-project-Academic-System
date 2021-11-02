@@ -89,18 +89,12 @@ VALUES('CH101', 'Introduction to Chemical Engineering', 'CH', 3, 2, 1, 1, 3),
 ('ME303', 'Fluid mechanics', 'ME', 3, 2, 1, 1, 4),
 ('MA201', 'Differential equations', 'MA', 3, 2, 1, 1, 3),
 ('MA202', 'Statistics', 'MA', 3, 2, 1, 1, 3.5),
-('CY202', 'Organic Chemistry', 'CY', 3, 2, 1, 1, 3),
-('CY522', 'Chemical Kinetics', 'CY', 3, 2, 1, 1, 3.5),
-('CY303', 'Biochemistry', 'CY', 3, 2, 1, 1, 4),
-('CY501', 'Physical chemistry', 'CY', 3, 2, 1, 1, 3.5),
-('PH101', 'Physics for Engineers', 'PH', 3, 2, 1, 1, 4.5),
-('PH202', 'Electromagnetism', 'PH', 3, 2, 1, 1, 3),
-('PH301', 'Nuclear Physics', 'PH', 3, 2, 1, 1, 3.5),
-('PH454', 'Optics', 'PH', 3, 2, 1, 1, 3),
 ('CE222', 'Structural mechanics', 'CE', 3, 2, 1, 1, 4),
 ('CE304', 'Steel structures', 'CE', 3, 2, 1, 1, 3),
-('BM101', 'Introduction to biomechanics', 'BM', 3, 2, 1, 1, 3),
-('BM201', 'Immunology', 'BM', 3, 2, 1, 1, 4);
+('CS202', 'Programming pragmactics', 'CS', 3, 2, 0, 1, 4),
+('CS301', 'Databases', 'CS', 3, 2, 0, 1, 4),
+('CS302', 'Algorithms', 'CS', 3, 2, 0, 1, 4),
+('CS303', 'Operating Systems', 'CS', 3, 2, 0, 1, 4);
 
 
 
@@ -132,7 +126,6 @@ VALUES (DEFAULT, 'Rahul', 'Sabharwal', 'CE', 32, 'Associate professor'),
 (DEFAULT, 'Madhav', 'K', 'ME', 66, 'Associate professor'),
 (DEFAULT, 'Hitesh', 'Shukla', 'CE', 45, 'Assistant professor'),
 (DEFAULT, 'Mani', 'Singla', 'CH', 33, 'Assistant professor'),
-(DEFAULT, 'Rishav', 'Ghoshal', 'BM', 40, 'Associate professor'),
 (DEFAULT, 'Zara', 'Sabharwal', 'MA', 32, 'Assistant professor');
 
 --Filling Student Table
@@ -296,25 +289,13 @@ CALL offer_course(11,'HS202', 2022, 1, 2, 'M2', '', 8.00, '2019,2020,2018', 'PH,
 CALL offer_course(6, 'CH101', 2022, 1, 1, 'E1', '', 7.50, '2019,2020,2021', 'CH');
 CALL offer_course(5, 'ME101', 2022, 1, 2, 'A1', 'MA102', 7.50, '2019,2020,2021', 'ME');
 CALL offer_course(6, 'CY101', 2022, 1, 1, 'M2', '', 7.00, '2018,2019,2020,2021', 'CS,EE,MA,CH');
-CALL offer_course(2, '', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');
-CALL offer_course(2, 'EE101', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');
-CALL offer_course(2, 'EE101', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');
-CALL offer_course(2, 'EE101', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');
-CALL offer_course(2, 'EE101', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');
-CALL offer_course(2, 'EE101', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');
-CALL offer_course(2, 'EE101', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');
-CALL offer_course(2, 'EE101', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');
-CALL offer_course(2, 'EE101', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');
-CALL offer_course(2, 'EE101', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');
-CALL offer_course(2, 'EE101', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');
-CALL offer_course(2, 'EE101', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');
 
 --creating all batch advisor roles for each department
 CREATE table departments(
 	dept varchar(20) PRIMARY KEY UNIQUE
 );
 INSERT into departments(dept)
-VALUES ('CS'), ('MA'), ('EE'), ('ME'), ('CH'), ('CE'), ('GE'), ('CY'), ('PH'), ('BM');
+VALUES ('CS'), ('MA'), ('EE'), ('ME'), ('CH'), ('CE'), ('GE'), ('CY');
 
 CREATE OR REPLACE FUNCTION create_advisor_user()
 RETURNS VOID
