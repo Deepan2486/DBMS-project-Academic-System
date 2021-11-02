@@ -133,19 +133,7 @@ VALUES (DEFAULT, 'Rahul', 'Sabharwal', 'CE', 32, 'Associate professor'),
 (DEFAULT, 'Hitesh', 'Shukla', 'CE', 45, 'Assistant professor'),
 (DEFAULT, 'Mani', 'Singla', 'CH', 33, 'Assistant professor'),
 (DEFAULT, 'Rishav', 'Ghoshal', 'BM', 40, 'Associate professor'),
-(DEFAULT, 'Zara', 'Sabharwal', 'MA', 32, 'Assistant professor'),
-(DEFAULT, 'Piyush', 'Joseph', 'CS', 32, 'Assistant professor'),
-(DEFAULT, 'Ragini', 'Chadda', 'EE', 33, 'Assistant professor'),
-(DEFAULT, 'Avesh', 'Siddiqui', 'CE', 45, 'Associate professor'),
-(DEFAULT, 'Jimmy', 'Saxena', 'PH', 33, 'Assistant professor'),
-(DEFAULT, 'Vicky', 'Kumar', 'CY', 32, 'Assistant professor'),
-(DEFAULT, 'Vaibhav', 'Kumar', 'EE', 56, 'Assistant professor'),
-(DEFAULT, 'Sumita', 'Arora', 'EE', 32, 'Assistant professor'),
-(DEFAULT, 'Sakshi', 'Chahal', 'EE', 33, 'Associate professor'),
-(DEFAULT, 'Angresh', 'Kumar', 'CS', 56, 'Assistant professor'),
-(DEFAULT, 'Aheli', 'Singh', 'CS', 35, 'Associate professor'),
-(DEFAULT, 'Babita', 'Sasmal', 'ME', 67, 'Professor'),
-(DEFAULT, 'Subeer', 'Singh', 'ME', 68, 'Professor');
+(DEFAULT, 'Zara', 'Sabharwal', 'MA', 32, 'Assistant professor');
 
 --Filling Student Table
 INSERT into student(st_id, first_name, last_name, department, batch, degree)
