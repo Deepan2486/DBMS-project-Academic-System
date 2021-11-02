@@ -58,7 +58,7 @@ CREATE TABLE Student(
 
 
 
---Filling course offering table
+--Filling course catalogue table
 INSERT INTO course_catalogue(course_id, course_name, department, l, t, p, s, c)
 VALUES('CY101', 'Chemistry for Engineers', 'CY', 3, 2, 1, 1, 3);
 INSERT INTO course_catalogue(course_id, course_name, department, l, t, p, s, c)
