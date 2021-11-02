@@ -295,15 +295,26 @@ on course_offering
 FOR EACH ROW
 EXECUTE PROCEDURE _make_course_table();
 
-CALL offer_course(2, 'EE101', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');	
-CALL offer_course(1, 'EE101', 2022, 1, 2, 'M1', '', 5.00, '2019 2020 2021', 'EE CS');	
-CALL offer_course(7, 'CS201', 2022, 1, 2, 'E2', 'GE103', 7.50, '2019', 'CS');
-CALL offer_course(4, 'MA102', 2022, 1, 1, 'A1', '', 7.00, '2019,2020', 'MA,PH,CS,EE');
+CALL offer_course(2, 'EE101', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE,CS');	
+CALL offer_course(1, 'EE101', 2022, 1, 2, 'M1', 'GE104', 5.00, '2019,2020,2021', 'EE,CS');	
+CALL offer_course(7, 'CS201', 2022, 1, 2, 'E2', 'GE103', 7.50, '2019,2020', 'CS');
+CALL offer_course(4, 'MA102', 2022, 1, 1, 'A1', 'MA101', 7.00, '2019,2020', 'MA,PH,CS,EE');
 CALL offer_course(11,'HS202', 2022, 1, 2, 'M2', '', 8.00, '2019,2020,2018', 'PH,CY,MA');
-CALL offer_course(6, 'CH101', 2022, 1, 1, 'E1', '', 7.50, '2019,2020', 'CH');
-CALL offer_course(5, 'ME101', 2022, 1, 2, 'A1', 'MA102', 7.50, '2019', 'ME');
-CALL offer_course(6, 'CY101', 2022, 1, 1, 'M2', '', 7.00, '2018,2019,2020', 'CS,EE,MA,CH');
-
+CALL offer_course(6, 'CH101', 2022, 1, 1, 'E1', '', 7.50, '2019,2020,2021', 'CH');
+CALL offer_course(5, 'ME101', 2022, 1, 2, 'A1', 'MA102', 7.50, '2019,2020,2021', 'ME');
+CALL offer_course(6, 'CY101', 2022, 1, 1, 'M2', '', 7.00, '2018,2019,2020,2021', 'CS,EE,MA,CH');
+CALL offer_course(2, '', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');
+CALL offer_course(2, 'EE101', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');
+CALL offer_course(2, 'EE101', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');
+CALL offer_course(2, 'EE101', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');
+CALL offer_course(2, 'EE101', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');
+CALL offer_course(2, 'EE101', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');
+CALL offer_course(2, 'EE101', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');
+CALL offer_course(2, 'EE101', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');
+CALL offer_course(2, 'EE101', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');
+CALL offer_course(2, 'EE101', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');
+CALL offer_course(2, 'EE101', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');
+CALL offer_course(2, 'EE101', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');
 
 --creating all batch advisor roles for each department
 CREATE table departments(
