@@ -131,11 +131,11 @@ VALUES ('2019CSB1002', 'Vanshu', 'Patil', 'CS', 2019, 'BTech'),
 ('2020CEB1344', 'Tripti', 'Tripathi', 'CE', 2020, 'BTech'),
 ('2018MEB1122', 'Rachit', 'Jain', 'ME', 2018, 'BTech'),
 ('2020CSB1333', 'Somak', 'Bose', 'CS', 2020, 'BTech'),
-('2021MAB1000', 'Kushal', 'Gupta', 'MA', 2017, 'BTech'),
+('2021MAB1000', 'Kushal', 'Gupta', 'MA', 2021, 'BTech'),
 ('2020CHB1059', 'Soumya', 'Jain', 'CH', 2020, 'BTech'),
 ('2019CSB1075', 'Kriti', 'Pandey', 'CS', 2019, 'BTech'),
-('2021EEB1067', 'Siddhant', 'Verma', 'EE', 2019, 'BTech'),
-('2021CSM1115', 'Anita', 'Aggarwal', 'CS', 2020, 'MTech');
+('2021EEB1067', 'Siddhant', 'Verma', 'EE', 2021, 'BTech'),
+('2021CSM1115', 'Anita', 'Aggarwal', 'CS', 2021, 'MTech');
 
 
 CREATE TABLE timetable_slots(
