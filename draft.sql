@@ -160,7 +160,25 @@ VALUES ('2019CSB1002', 'Vanshu', 'Patil', 'CS', 2019, 'BTech'),
 ('2020CEB1344', 'Tripti', 'Tripathi', 'CE', 2020, 'BTech'),
 ('2018MEB1122', 'Rachit', 'Jain', 'ME', 2018, 'BTech'),
 ('2020CSB1333', 'Somak', 'Bose', 'CS', 2020, 'BTech'),
-('2017MAB1000', 'Kushal', 'Gupta', 'MA', 2017, 'BTech');
+('2017MAB1000', 'Kushal', 'Gupta', 'MA', 2017, 'BTech'),
+('2020CHB1059', 'Soumya', 'Jain', 'CH', 2020, 'BTech'),
+('2019CSB1075', 'Kriti', 'Pandey', 'CS', 2019, 'BTech'),
+('2019EEB1067', 'Siddhant', 'Verma', 'EE', 2019, 'BTech'),
+('2020CSM1115', 'Anita', 'Aggarwal', 'CS', 2020, 'MTech'),
+('2019CHM1119', 'Anukriti', 'Gupta', 'CH', 2019, 'MTech'),
+('2020MEB1125', 'Alekh', 'Raj', 'ME', 2020, 'BTech'),
+('2020MEB1099', 'Harry', 'Singh', 'ME', 2020, 'BTech'),
+('2019MEB1111', 'Raj', 'Chopra', 'ME', 2019, 'BTech'),
+('2020EEB1216', 'Saksham', 'Raj', 'EE', 2020, 'BTech'),
+('2019CEB1009', 'Naitik', 'Gupta', 'CE', 2019, 'BTech'),
+('2019MAB1121', 'Ankit', 'Pandey', 'MA', 2019, 'BTech'),
+('2020PHB1052', 'shubham', 'Sonawane', 'PH', 2020, 'BTech'),
+('2020CSB1137', 'Tanmay', 'Raj', 'CS', 2020, 'BTech'),
+('2020CSB1098', 'Aman', 'Saini', 'CS', 2020, 'BTech'),
+('2020EEB1174', 'Pratik', 'Mishra', 'EE', 2020, 'BTech'),
+('2020EEB1179', 'Mazhar', 'Lal', 'EE', 2020, 'BTech'),
+('2021CEB1111', 'Ankita', 'Gupta', 'CE', 2021, 'BTech'),
+('2021CSB1152', 'Ashutosh', 'Patel', 'CS', 2021, 'BTech');
 
 
 CREATE TABLE timetable_slots(
