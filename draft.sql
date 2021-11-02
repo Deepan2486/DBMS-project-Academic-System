@@ -373,6 +373,11 @@ SELECT create_advisor_user();
 CREATE ROLE Dean_Academics
 LOGIN
 PASSWORD 'pass_dean_acad';
+
+--make Academic section role
+CREATE ROLE academic_section
+LOGIN
+PASSWORD 'pass_acad';
 	
 --make all student roles
 CREATE OR REPLACE FUNCTION create_student_user()
@@ -1214,6 +1219,10 @@ begin
 	GRANT SELECT, INSERT, UPDATE, DELETE
 	ON ALL TABLES IN SCHEMA public 
 	TO dean_academics;
+	
+	GRANT SELECT, INSERT, UPDATE, DELETE
+	ON ALL TABLES IN SCHEMA public 
+	TO academic_section;
 	
 	return;
 end;
