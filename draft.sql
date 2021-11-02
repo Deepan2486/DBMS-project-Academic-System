@@ -270,7 +270,7 @@ on course_offering
 FOR EACH ROW
 EXECUTE PROCEDURE _make_course_table();
 
-CALL offer_course(2, 'EE201', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');	
+CALL offer_course(2, 'EE201', 2022, 1, 1, 'M1', 'GE104', 5.00, '2019', 'EE');	
 CALL offer_course(1, 'EE201', 2022, 1, 2, 'M1', 'GE104', 5.00, '2019,2020,2021', 'EE');	
 CALL offer_course(7, 'CS201', 2022, 1, 1, 'E2', 'GE103', 7.50, '2019,2020', 'CS');
 CALL offer_course(13, 'MA102', 2022, 1, 1, 'A1', 'MA101', 7.00, '2019,2020', 'MA,CS,EE');
