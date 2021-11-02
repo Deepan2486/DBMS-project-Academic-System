@@ -347,6 +347,31 @@ $$;
 CALL create_student_transcripts();
 
 
+--UPLOAD TIME-TABLE SLOTS FROM CSV FILE
+CREATE or REPLACE PROCEDURE upload_timetableslots()
+language plpgsql
+as $$
+declare
+	location varchar(100);
+	delim varchar(10);
+begin
+	location := 'E:\sql_databases\dbms project\timetable_slots.csv';
+	delim := ',';
+	
+	DELETE from timetable_slots;
+	
+	EXECUTE format(
+		'COPY timetable_slots(slot)
+		FROM %L
+		DELIMITER %L
+		CSV HEADER;', location, delim );
+	
+end;
+$$;
+
+CALL upload_timetableslots();
+
+
 --utility function to convert grades to points
 CREATE OR REPLACE FUNCTION grade_conversion(grade varchar(10))
 RETURNS integer
