@@ -523,6 +523,8 @@ declare
 	rec2 RECORD;
 	rec3 RECORD;
 	rec4 RECORD;
+	rec5 RECORD;
+	rec6 RECORD;
 	ticket_id varchar(100);
 	ticket_table varchar(100);
 begin
@@ -551,6 +553,22 @@ begin
 	
 	student_takes_table:= name || '_' || rolename || '_' || 'takes';
 	student_trans:=name || '_' || rolename || '_' || 'transcript';
+	
+	
+	--checking for duplicates in takes and transcript table
+	FOR rec5 in EXECUTE FORMAT('select * from %I', student_takes_table) LOOP
+		if (rec5.course_id=courseid) THEN
+			RAISE EXCEPTION 'You already have registered for this course in this semester!';
+			RETURN;
+		end if;
+	END LOOP;
+	
+	FOR rec6 in EXECUTE FORMAT('select * from %I', student_trans) LOOP
+		if (rec6.course_id=courseid) THEN
+			RAISE EXCEPTION 'You already have cleared this course previously!';
+			RETURN;
+		end if;
+	END LOOP;
 	
 	
 	FOR rec3 in EXECUTE FORMAT( 'select * from %I ', student_takes_table) LOOP
@@ -641,6 +659,8 @@ begin
 		--ticket generation
 		ticket_id := rolename || '_' || courseid || '_' || sec;
 		ticket_table:= rolename || '_ticket';
+		
+		RAISE NOTICE 'You have requested for course registration more than credit limit. Ticket generated!';
 		
 		EXECUTE format('INSERT into %I(ticket_id, course_id, section) 
 					   VALUES (%L, %L, %L);', ticket_table,ticket_id, courseid, sec);
