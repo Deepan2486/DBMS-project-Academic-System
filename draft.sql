@@ -104,25 +104,17 @@ VALUES (DEFAULT, 'Amit', 'Sharma', 'EE', 26, 'Assistant professor');
 INSERT INTO instructor(ins_id, first_name, last_name, department, age, position)
 VALUES (DEFAULT, 'Karishma', 'Roy', 'EE', 49, 'Associate Professor');
 INSERT INTO instructor(ins_id, first_name, last_name, department, age, position)
-VALUES (DEFAULT, 'Parakram', 'Suchi', 'CE', 45, 'Assistant Professor');
+VALUES (DEFAULT, 'Parakram', 'Suchi', 'CS', 45, 'Assistant Professor');
 INSERT INTO instructor(ins_id, first_name, last_name, department, age, position)
-VALUES (DEFAULT, 'Saryu', 'Sengupta', 'MA', 38, 'Assistant Professor');
-INSERT INTO instructor(ins_id, first_name, last_name, department, age, position)
-VALUES (DEFAULT, 'Kartik' ,'Matta', 'ME', 32, 'Assistant Professor');
+VALUES (DEFAULT, 'Saryu', 'Sengupta', 'CS', 38, 'Assistant Professor');
 INSERT INTO instructor(ins_id, first_name, last_name, department, age, position)
 VALUES (DEFAULT, 'Swati', 'Sharma', 'CH', 52, 'Assistant Professor');
 INSERT INTO instructor(ins_id, first_name, last_name, department, age, position)
 VALUES (DEFAULT, 'Ekta', 'Basu', 'CS', 47, 'Assistant Professor');
 INSERT INTO instructor(ins_id, first_name, last_name, department, age, position)
-VALUES (DEFAULT, 'Virat', 'Bindra', 'ME', 29, 'Assistant Professor');
-INSERT INTO instructor(ins_id, first_name, last_name, department, age, position)
 VALUES (DEFAULT, 'Rohit', 'Kumar', 'CS', 36, 'Associate professor');
-INSERT INTO instructor(ins_id, first_name, last_name, department, age, position)
-VALUES (DEFAULT, 'Subham', 'Singh', 'CH', 45, 'Associate professor');
-INSERT INTO instructor(ins_id, first_name, last_name, department, age, position)
-VALUES (DEFAULT, 'Rahul', 'Sabharwal', 'CE', 32, 'Associate professor'),
 (DEFAULT, 'Manju', 'Debnath', 'CS', 52, 'Associate professor'),
-(DEFAULT, 'Diksha', 'Bawu', 'EE', 32, 'Assistant professor'),
+(DEFAULT, 'Diksha', 'Basu', 'EE', 32, 'Assistant professor'),
 (DEFAULT, 'Madhav', 'K', 'ME', 66, 'Associate professor'),
 (DEFAULT, 'Hitesh', 'Shukla', 'CE', 45, 'Assistant professor'),
 (DEFAULT, 'Mani', 'Singla', 'CH', 33, 'Assistant professor'),
