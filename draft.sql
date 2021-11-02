@@ -112,7 +112,7 @@ VALUES (DEFAULT, 'Swati', 'Sharma', 'CH', 52, 'Assistant Professor');
 INSERT INTO instructor(ins_id, first_name, last_name, department, age, position)
 VALUES (DEFAULT, 'Ekta', 'Basu', 'CS', 47, 'Assistant Professor');
 INSERT INTO instructor(ins_id, first_name, last_name, department, age, position)
-VALUES (DEFAULT, 'Rohit', 'Kumar', 'CS', 36, 'Associate professor');
+VALUES (DEFAULT, 'Rohit', 'Kumar', 'CS', 36, 'Associate professor'),
 (DEFAULT, 'Manju', 'Debnath', 'CS', 52, 'Associate professor'),
 (DEFAULT, 'Diksha', 'Basu', 'EE', 32, 'Assistant professor'),
 (DEFAULT, 'Madhav', 'K', 'ME', 66, 'Associate professor'),
