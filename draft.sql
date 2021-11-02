@@ -141,12 +141,12 @@ VALUES ('2019CSB1002', 'Vanshu', 'Patil', 'CS', 2019, 'BTech'),
 ('2020CEB1344', 'Tripti', 'Tripathi', 'CE', 2020, 'BTech'),
 ('2018MEB1122', 'Rachit', 'Jain', 'ME', 2018, 'BTech'),
 ('2020CSB1333', 'Somak', 'Bose', 'CS', 2020, 'BTech'),
-('2017MAB1000', 'Kushal', 'Gupta', 'MA', 2017, 'BTech'),
+('2021MAB1000', 'Kushal', 'Gupta', 'MA', 2017, 'BTech'),
 ('2019MEB1111', 'Raj', 'Chopra', 'ME', 2019, 'BTech'),
 ('2020CHB1059', 'Soumya', 'Jain', 'CH', 2020, 'BTech'),
 ('2019CSB1075', 'Kriti', 'Pandey', 'CS', 2019, 'BTech'),
-('2019EEB1067', 'Siddhant', 'Verma', 'EE', 2019, 'BTech'),
-('2020CSM1115', 'Anita', 'Aggarwal', 'CS', 2020, 'MTech');
+('2021EEB1067', 'Siddhant', 'Verma', 'EE', 2019, 'BTech'),
+('2021CSM1115', 'Anita', 'Aggarwal', 'CS', 2020, 'MTech');
 
 
 CREATE TABLE timetable_slots(
@@ -281,14 +281,20 @@ on course_offering
 FOR EACH ROW
 EXECUTE PROCEDURE _make_course_table();
 
-CALL offer_course(2, 'EE101', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE,CS');	
-CALL offer_course(1, 'EE101', 2022, 1, 2, 'M1', 'GE104', 5.00, '2019,2020,2021', 'EE,CS');	
-CALL offer_course(7, 'CS201', 2022, 1, 2, 'E2', 'GE103', 7.50, '2019,2020', 'CS');
-CALL offer_course(4, 'MA102', 2022, 1, 1, 'A1', 'MA101', 7.00, '2019,2020', 'MA,PH,CS,EE');
-CALL offer_course(11,'HS202', 2022, 1, 2, 'M2', '', 8.00, '2019,2020,2018', 'PH,CY,MA');
+CALL offer_course(2, 'EE201', 2022, 1, 1, 'M1', 'GE104', 7.00, '2019', 'EE');	
+CALL offer_course(1, 'EE201', 2022, 1, 2, 'M1', 'GE104', 5.00, '2019,2020,2021', 'EE');	
+CALL offer_course(7, 'CS201', 2022, 1, 1, 'E2', 'GE103', 7.50, '2019,2020', 'CS');
+CALL offer_course(4, 'MA102', 2022, 1, 1, 'A1', 'MA101', 7.00, '2019,2020', 'MA,CS,EE');
+CALL offer_course(17, 'MA102', 2022, 1, 2, 'A1', 'MA101', 7.00, '2019,2020', 'MA,CS,EE');
+CALL offer_course(11,'HS202', 2022, 1, 1, 'M2', '', 8.00, '2019,2020,2018', 'PH,CY,MA');
 CALL offer_course(6, 'CH101', 2022, 1, 1, 'E1', '', 7.50, '2019,2020,2021', 'CH');
 CALL offer_course(5, 'ME101', 2022, 1, 2, 'A1', 'MA102', 7.50, '2019,2020,2021', 'ME');
 CALL offer_course(6, 'CY101', 2022, 1, 1, 'M2', '', 7.00, '2018,2019,2020,2021', 'CS,EE,MA,CH');
+CALL offer_course(12, 'CS301', 2022, 1, 1, 'A3', 'CS201', 7.50, '2019,2020,2021', 'CS');
+CALL offer_course(9, 'CS302', 2022, 1, 1, 'E1', 'CS202', 7.00, '2019,2020,2021', 'CS EE');
+CALL offer_course(12, 'CS303', 2022, 1, 1, 'A3', 'CS203', 7.00, '2019,2020,2021', 'CS EE');
+
+
 
 --creating all batch advisor roles for each department
 CREATE table departments(
