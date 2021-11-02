@@ -695,97 +695,6 @@ $$;
 SELECT make_advisor_ticket_tables();
 
 
---ALL ACCESS GIVING
-CREATE OR REPLACE FUNCTION give_access_to_dean()
-RETURNS void
-language plpgsql
-as $$
-begin
-	GRANT SELECT, INSERT, UPDATE, DELETE
-	ON ALL TABLES IN SCHEMA public 
-	TO dean_academics;
-	
-	return;
-end;
-$$;
-
-SELECT give_access_to_dean();
-
-CREATE OR REPLACE FUNCTION give_access_to_advisor()
-RETURNS VOID
-language plpgsql
-as $$
-declare
-	row_dept departments%ROWTYPE;
-	rolename varchar(100);
-begin
-	FOR row_dept in (SELECT * from departments)
-	LOOP
-		rolename:='advisor_'|| row_dept.dept;
-		EXECUTE format(
-		'GRANT SELECT ON ALL TABLES IN SCHEMA PUBLIC
-		 TO %I', rolename);
-	END LOOP;
-	
-	return;
-end;
-$$;
-
-SELECT give_access_to_advisor();
-
-CREATE OR REPLACE FUNCTION give_access_to_instructor()
-RETURNS VOID
-language plpgsql
-as $$
-declare
-	row_var Instructor%rowtype;
-	rolename varchar(100);
-	instructor_id varchar(100);
-begin
-	FOR row_var in (SELECT * from Instructor)
-	LOOP
-		instructor_id := CAST(row_var.ins_id AS varchar);
-		rolename := row_var.first_name ||'_'|| instructor_id ;
-		EXECUTE format(
-		'GRANT SELECT ON ALL TABLES IN SCHEMA PUBLIC
-		 TO %I', rolename);
-		 
-		 EXECUTE format(
-		 'GRANT SELECT, INSERT, UPDATE, DELETE ON course_offering to %I'
-			 ,rolename
-		 );
-		 
-	END LOOP;
-	return;
-end;
-$$;
-SELECT give_access_to_instructor();
-
-CREATE OR REPLACE FUNCTION give_access_to_student()
-RETURNS VOID
-language plpgsql
-as $$
-declare
-	row_var Student%rowtype;
-	rolename varchar(100);
-	ticket_table varchar(100);
-begin
-	FOR row_var in (SELECT * from Student)
-	LOOP
-		rolename :=row_var.st_id;
-		ticket_table:= rolename || '_ticket';
-		EXECUTE format(
-		'GRANT SELECT ON course_offering, course_catalogue, student
-		 TO %I;', rolename);
-		 
-		 EXECUTE format('GRANT ALL ON %I to %I;', ticket_table, rolename );
-		 
-	END LOOP;
-	return;
-end;
-$$;
-
-SELECT give_access_to_student();
 
 --THIS COPIES ALL TICKETS TO DEAN  Ticket TABLE
 CREATE OR REPLACE PROCEDURE extract_ticket_dean()
@@ -1203,3 +1112,98 @@ begin
 
 end;
 $$;
+
+
+--ALL ACCESS GIVING
+CREATE OR REPLACE FUNCTION give_access_to_dean()
+RETURNS void
+language plpgsql
+as $$
+begin
+	GRANT SELECT, INSERT, UPDATE, DELETE
+	ON ALL TABLES IN SCHEMA public 
+	TO dean_academics;
+	
+	return;
+end;
+$$;
+
+SELECT give_access_to_dean();
+
+CREATE OR REPLACE FUNCTION give_access_to_advisor()
+RETURNS VOID
+language plpgsql
+as $$
+declare
+	row_dept departments%ROWTYPE;
+	rolename varchar(100);
+begin
+	FOR row_dept in (SELECT * from departments)
+	LOOP
+		rolename:='advisor_'|| row_dept.dept;
+		EXECUTE format(
+		'GRANT SELECT ON ALL TABLES IN SCHEMA PUBLIC
+		 TO %I', rolename);
+	END LOOP;
+	
+	return;
+end;
+$$;
+
+SELECT give_access_to_advisor();
+
+CREATE OR REPLACE FUNCTION give_access_to_instructor()
+RETURNS VOID
+language plpgsql
+as $$
+declare
+	row_var Instructor%rowtype;
+	rolename varchar(100);
+	instructor_id varchar(100);
+begin
+	FOR row_var in (SELECT * from Instructor)
+	LOOP
+		instructor_id := CAST(row_var.ins_id AS varchar);
+		rolename := row_var.first_name ||'_'|| instructor_id ;
+		EXECUTE format(
+		'GRANT SELECT ON ALL TABLES IN SCHEMA PUBLIC
+		 TO %I', rolename);
+		 
+		 EXECUTE format(
+		 'GRANT SELECT, INSERT, UPDATE, DELETE ON course_offering to %I'
+			 ,rolename
+		 );
+		 
+	END LOOP;
+	return;
+end;
+$$;
+SELECT give_access_to_instructor();
+
+CREATE OR REPLACE FUNCTION give_access_to_student()
+RETURNS VOID
+language plpgsql
+as $$
+declare
+	row_var Student%rowtype;
+	rolename varchar(100);
+	ticket_table varchar(100);
+begin
+	FOR row_var in (SELECT * from Student)
+	LOOP
+		rolename :=row_var.st_id;
+		ticket_table:= rolename || '_ticket';
+		EXECUTE format(
+		'GRANT SELECT ON course_offering, course_catalogue, student
+		 TO %I;', rolename);
+		 
+		 EXECUTE format('GRANT ALL ON %I to %I;', ticket_table, rolename );
+		 
+	END LOOP;
+	return;
+end;
+$$;
+
+SELECT give_access_to_student();
+
+
