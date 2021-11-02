@@ -289,7 +289,7 @@ CREATE table departments(
 	dept varchar(20) PRIMARY KEY UNIQUE
 );
 INSERT into departments(dept)
-VALUES ('CS'), ('MA'), ('EE'), ('ME'), ('CH'), ('CE'), ('GE'), ('CY');
+VALUES ('CS'), ('MA'), ('EE'), ('ME'), ('CH'), ('CE'), ('CY');
 
 CREATE OR REPLACE FUNCTION create_advisor_user()
 RETURNS VOID
