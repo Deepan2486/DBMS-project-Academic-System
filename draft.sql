@@ -572,7 +572,7 @@ begin
 	
 	
 	FOR rec3 in EXECUTE FORMAT( 'select * from %I ', student_takes_table) LOOP
-		if (rec.timetable_slot=slot) THEN
+		if (rec3.timetable_slot=slot) THEN
 		 	RAISE EXCEPTION 'You already have a registered course in this time-table slot!';
 			RETURN;
 		END IF;
@@ -643,8 +643,8 @@ begin
 		END IF;
 	END LOOP;
 	
-	FOR rec2 in EXECUTE format('SELECT * FROM %I', student_takes_table) LOOP
-		curr_credits := curr_credits + rec2.credits;
+	FOR rec2 in EXECUTE format('SELECT * FROM %I, course_catalogue where course_catalogue.course_id=%I.course_id', student_takes_table, student_takes_table) LOOP
+		curr_credits := curr_credits + rec2.C;
 	END LOOP;
 	
 	SELECT c INTO course_credit FROM course_catalogue WHERE course_id=courseid;
@@ -653,7 +653,7 @@ begin
 	
 	if (curr_credits <= (1.25 * (sem1credits + sem2credits)/2)) THEN
 		EXECUTE FORMAT ('INSERT INTO %I(course_id, section, timetable_slot)
-						VALUES (%L, %L, %L);', student_takes_table, courseid, sec, course_credit  );
+						VALUES (%L, %L, %L);', student_takes_table, courseid, sec, slot  );
 		
 	ELSE
 		--ticket generation
