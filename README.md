@@ -1,2 +1,5 @@
 # DBMS_project
-Academic Portal Management system (part of course project CS301 Databases)
+- Academic Portal Management system (Phase A) 
+- Only Backend schemas, procedures and basic workflow
+
+(part of course project CS301 Databases)
